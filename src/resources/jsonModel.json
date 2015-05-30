@@ -1,0 +1,464 @@
+[
+			[
+					{
+			            "type": "columnheader",
+					    "templateOptions": {
+					    	"label": "Event Details"
+					    }
+			        },
+			        {
+					    "key": "artist",
+					    "type": "autocomplete",
+					    "templateOptions": {
+					   		"type": "text",
+					    	"label": "Artist Name",
+					    	"placeholder": "Select an artist",
+					    	"searchby": "title",
+					    	"labelProp": "title",
+					    	"required": true
+					    }
+					},
+					{
+					    "key": "offer",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "number",
+					    	"label": "Offer Amount",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "date",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "datetime-local",
+					    	"label": "Date",
+					    	"required": true
+					    }
+					},
+					{
+					    "key": "event",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Event Name",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "website",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "url",
+					    	"label": "Event Website",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "time",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "time",
+					    	"label": "Set / Stage Time",
+					    	"required": false
+					    }
+					},
+					{
+						"key" : "duration",
+						"type" : "input",
+						"templateOptions": {
+							"type": "number",
+					    	"label": "Set Duration",
+					    	"required": false
+					    }
+			        },
+			        {
+					    "key": "lineup",
+					    "type": "inputtags",
+					    "templateOptions": {
+					    	"label": "Confirmed Line Up",
+					    	"required": false,
+					    	"placeholder": "A new tag will be added on pressing ENTER"
+					    }
+					},
+					{
+		               "key": "type",
+		               "type": "select",
+		               "templateOptions":{
+					    	"label": "Event Type",
+					    	"options": [{"displayName": "Loading..."}],
+					    	"valueProp": "value",
+					    	"labelProp": "value",
+					    	"required": false
+		               }
+					},
+					{
+					    "key": "open",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "time",
+					    	"label": "Doors Open",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "curfew",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "time",
+					    	"label": "Curfew",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "age",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "number",
+					    	"label": "Age",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "quantity",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "number",
+					    	"label": "Amount of Tickets",
+					    	"required": false
+					    }
+					},
+					{
+		               "key": "currency",
+		               "type": "select",
+		               "templateOptions":{
+					    	"label": "Ticket Currency",
+					    	"options": [{"displayName": "Loading..."}],
+					    	"valueProp": "value",
+					    	"labelProp": "displayName",
+					    	"required": false
+		               }
+					},
+					{
+					    "key": "price",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "number",
+					    	"label": "Ticket Price",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "travel",
+					    "type": "checkbox",
+					    "templateOptions": {
+					    	"label": "Includes Travel (Flights, Train, Bus)",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "accommodation",
+					    "type": "checkbox",
+					    "templateOptions": {
+					    	"label": "Includes Accommodation",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "transportation",
+					    "type": "checkbox",
+					    "templateOptions": {
+					    	"label": "Includes Ground Transportation",
+					    	"required": false
+					    }
+					}
+			],
+			[
+					{
+			            "type": "columnheader",
+					    "templateOptions": {
+					    	"label": "Venue"
+					    }
+			        },
+					{
+					    "key": "venue.name",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Venue Name",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.address1",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Address 1",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.address2",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Address 2",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.zip",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "number",
+					    	"label": "Zip Code",
+					        "max": 99999,
+					        "min": 0,
+					        "pattern": "\\d{5}",
+					        "required": false
+					    }
+					},
+					{
+					    "key": "venue.city",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "City",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.state",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "State / Province",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.country",
+					    "type": "autocomplete",
+					    "templateOptions": {
+					   		"type": "text",
+					    	"label": "Country",
+					    	"placeholder": "Select a country",
+					    	"searchby": "name",
+					    	"labelProp": "name",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.phone",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "tel",
+					    	"label": "Phone",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.website",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "url",
+					    	"label": "Venue Website",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.facebook",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "url",
+					    	"label": "Venue Facebook Page",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.capacity",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "number",
+					    	"label": "Capacity",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "venue.airport",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Closest Airport / Station",
+					    	"required": false
+					    }
+					}
+			],
+			[
+					{
+			            "type": "columnheader",
+					    "templateOptions": {
+					    	"label": "Promoter Organization"
+					    }
+			        },
+					{
+					    "key": "organization.name",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Organization Name",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "organization.address1",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Address 1",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "organization.address2",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Address 2",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "organization.zip",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "number",
+					    	"label": "Zip Code",
+					        "max": 99999,
+					        "min": 0,
+					        "pattern": "\\d{5}",
+					        "required": false
+					    }
+					},
+					{
+					    "key": "organization.city",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "City",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "organization.state",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "State / Province",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "organization.country",
+					    "type": "autocomplete",
+					    "templateOptions": {
+					   		"type": "text",
+					    	"label": "Country",
+					    	"placeholder": "Select a country",
+					    	"searchby": "name",
+					    	"labelProp": "name",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "organization.phone",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "tel",
+					    	"label": "Phone",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "organization.website",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "url",
+					    	"label": "Company Website",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "organization.vat",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "VAT / Tax Number",
+					    	"required": false
+					    }
+					}
+			],
+			[
+					{
+			            "type": "columnheader",
+					    "templateOptions": {
+					    	"label": "Promoter Contact"
+					    }
+			        },
+					{
+					    "key": "promoter.name",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "First Name",
+					    	"required": true
+					    }
+					},
+					{
+					    "key": "promoter.lastname",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Last Name",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "promoter.phone",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "tel",
+					    	"label": "Phone",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "promoter.email",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "email",
+					    	"label": "Email",
+					        "required": true
+					    }
+					},
+					{
+					    "key": "promoter.skype",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "Skype",
+					        "required": false
+					    }
+					},
+					{
+					    "key": "promoter.vat",
+					    "type": "input",
+					    "templateOptions": {
+					    	"type": "text",
+					    	"label": "VAT / Tax Number",
+					    	"required": false
+					    }
+					}
+			]
+]
