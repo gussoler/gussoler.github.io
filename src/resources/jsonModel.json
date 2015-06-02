@@ -76,18 +76,18 @@
 					    "templateOptions": {
 					    	"label": "Confirmed Line Up",
 					    	"required": false,
-					    	"placeholder": "A new tag will be added on pressing ENTER"
+					    	"placeholder": "Enter a tag",
+					    	"secplaceholder": "+Tag"
 					    }
 					},
 					{
 		               "key": "type",
 		               "type": "select",
 		               "templateOptions":{
-					    	"label": "Event Type",
-					    	"options": [{"displayName": "Loading..."}],
+					    	"required": false,
 					    	"valueProp": "value",
 					    	"labelProp": "value",
-					    	"required": false
+					    	"placeholder": "Event Type"
 		               }
 					},
 					{
@@ -128,11 +128,10 @@
 		               "key": "currency",
 		               "type": "select",
 		               "templateOptions":{
-					    	"label": "Ticket Currency",
-					    	"options": [{"displayName": "Loading..."}],
+					    	"required": false,
 					    	"valueProp": "value",
 					    	"labelProp": "displayName",
-					    	"required": false
+					    	"placeholder": "Ticket Currency"
 		               }
 					},
 					{

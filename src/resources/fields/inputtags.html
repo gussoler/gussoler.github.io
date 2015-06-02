@@ -1,3 +1,6 @@
-<tags-input ng-model="model[options.key]" placeholder="{{options.templateOptions.placeholder}}">
-  <!-- <auto-complete source="loadItems($query)"></auto-complete> -->
-</tags-input>
+<md-chips
+        ng-model="model[options.key]"
+        placeholder="{{to.placeholder}}"
+        delete-button-label="Remove Tag"
+        delete-hint="Press delete to remove tag"
+        secondary-placeholder="{{to.secplaceholder}}"></md-chips>
