@@ -6995,7 +6995,7 @@ section.content {
 }
 
 /*
- * These are the default styles applied to the autocomplete component
+ * These are the default styles applied to autocomplete-alt component
  */
 .angucomplete-holder {
     position: relative;
@@ -7067,4 +7067,335 @@ section.content {
 
 .highlight {
 	color: #ff0000;
+}
+
+/*
+ * These are the default styles applied to angular-strap component
+ */
+.btn-strap {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.btn-strap:focus,
+.btn-strap:active:focus,
+.btn-strap.active:focus,
+.btn-strap.focus,
+.btn-strap:active.focus,
+.btn-strap.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.btn-strap:hover,
+.btn-strap:focus,
+.btn-strap.focus {
+  color: #333;
+  text-decoration: none;
+}
+.btn-strap:active,
+.btn-strap.active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+.btn-strap.disabled,
+.btn-strap[disabled],
+fieldset[disabled] .btn-strap {
+  pointer-events: none;
+  cursor: not-allowed;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  opacity: .65;
+}
+.btn-default-strap {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-default-strap:hover,
+.btn-default-strap:focus,
+.btn-default-strap.focus,
+.btn-default-strap:active,
+.btn-default-strap.active,
+.open > .dropdown-toggle.btn-default-strap {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-default-strap:active,
+.btn-default-strap.active,
+.open > .dropdown-toggle.btn-default-strap {
+  background-image: none;
+}
+.btn-default-strap.disabled,
+.btn-default-strap[disabled],
+fieldset[disabled] .btn-default-strap,
+.btn-default-strap.disabled:hover,
+.btn-default-strap[disabled]:hover,
+fieldset[disabled] .btn-default-strap:hover,
+.btn-default-strap.disabled:focus,
+.btn-default-strap[disabled]:focus,
+fieldset[disabled] .btn-default-strap:focus,
+.btn-default-strap.disabled.focus,
+.btn-default-strap[disabled].focus,
+fieldset[disabled] .btn-default-strap.focus,
+.btn-default-strap.disabled:active,
+.btn-default-strap[disabled]:active,
+fieldset[disabled] .btn-default-strap:active,
+.btn-default-strap.disabled.active,
+.btn-default-strap[disabled].active,
+fieldset[disabled] .btn-default-strap.active {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-default-strap .badge {
+  color: #fff;
+  background-color: #333;
+}
+.btn-primary-strap {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.btn-primary-strap:hover,
+.btn-primary-strap:focus,
+.btn-primary-strap.focus,
+.btn-primary-strap:active,
+.btn-primary-strap.active,
+.open > .dropdown-toggle.btn-primary-strap {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
+.btn-primary-strap:active,
+.btn-primary-strap.active,
+.open > .dropdown-toggle.btn-primary-strap {
+  background-image: none;
+}
+.btn-primary-strap.disabled,
+.btn-primary-strap[disabled],
+fieldset[disabled] .btn-primary-strap,
+.btn-primary-strap.disabled:hover,
+.btn-primary-strap[disabled]:hover,
+fieldset[disabled] .btn-primary-strap:hover,
+.btn-primary-strap.disabled:focus,
+.btn-primary-strap[disabled]:focus,
+fieldset[disabled] .btn-primary-strap:focus,
+.btn-primary-strap.disabled.focus,
+.btn-primary-strap[disabled].focus,
+fieldset[disabled] .btn-primary-strap.focus,
+.btn-primary-strap.disabled:active,
+.btn-primary-strap[disabled]:active,
+fieldset[disabled] .btn-primary-strap:active,
+.btn-primary-strap.disabled.active,
+.btn-primary-strap[disabled].active,
+fieldset[disabled] .btn-primary-strap.active {
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.btn-primary-strap .badge {
+  color: #337ab7;
+  background-color: #fff;
+}
+.btn-info-strap {
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.btn-info-strap:hover,
+.btn-info-strap:focus,
+.btn-info-strap.focus,
+.btn-info-strap:active,
+.btn-info-strap.active,
+.open > .dropdown-toggle.btn-info-strap {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+.btn-info-strap:active,
+.btn-info-strap.active,
+.open > .dropdown-toggle.btn-info-strap {
+  background-image: none;
+}
+.btn-info-strap.disabled,
+.btn-info-strap[disabled],
+fieldset[disabled] .btn-info-strap,
+.btn-info-strap.disabled:hover,
+.btn-info-strap[disabled]:hover,
+fieldset[disabled] .btn-info-strap:hover,
+.btn-info-strap.disabled:focus,
+.btn-info-strap[disabled]:focus,
+fieldset[disabled] .btn-info-strap:focus,
+.btn-info-strap.disabled.focus,
+.btn-info-strap[disabled].focus,
+fieldset[disabled] .btn-info-strap.focus,
+.btn-info-strap.disabled:active,
+.btn-info-strap[disabled]:active,
+fieldset[disabled] .btn-info-strap:active,
+.btn-info-strap.disabled.active,
+.btn-info-strap[disabled].active,
+fieldset[disabled] .btn-info-strap.active {
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.btn-info-strap .badge {
+  color: #5bc0de;
+  background-color: #fff;
+}
+.btn-xs-strap > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.btn-block-strap {
+  display: block;
+  width: 100%;
+}
+.btn-block-strap + .btn-block-strap {
+  margin-top: 5px;
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('/src/fonts/glyphicons-halflings-regular.eot');
+  src: url('/src/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/src/fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('/src/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/src/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/src/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-chevron-left:before {
+  content: "\e079";
+}
+
+.glyphicon-chevron-right:before {
+  content: "\e080";
+}
+
+.glyphicon-ok:before {
+  content: "\e013";
+}
+
+.glyphicon-chevron-up:before {
+  content: "\e113";
+}
+
+.glyphicon-chevron-down:before {
+  content: "\e114";
+}
+
+.carousel-control .icon-prev,
+.carousel-control .icon-next,
+.carousel-control .glyphicon-chevron-left,
+.carousel-control .glyphicon-chevron-right {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  display: inline-block;
+}
+.carousel-control .icon-prev,
+.carousel-control .glyphicon-chevron-left {
+  left: 50%;
+  margin-left: -10px;
+}
+
+@media screen and (min-width: 768px) {
+  .carousel-control .glyphicon-chevron-left,
+  .carousel-control .glyphicon-chevron-right,
+  .carousel-control .icon-prev,
+  .carousel-control .icon-next {
+    width: 30px;
+    height: 30px;
+    margin-top: -15px;
+    font-size: 30px;
+  }
+  .carousel-control .glyphicon-chevron-left,
+  .carousel-control .icon-prev {
+    margin-left: -15px;
+  }
+  .carousel-control .glyphicon-chevron-right,
+  .carousel-control .icon-next {
+    margin-right: -15px;
+  }
+  .carousel-caption {
+    right: 20%;
+    left: 20%;
+    padding-bottom: 30px;
+  }
+  .carousel-indicators {
+    bottom: 20px;
+  }
+}
+
+/**
+ * angular-strap
+ * @version v2.2.4 - 2015-05-30
+ * @link http://mgcrea.github.io/angular-strap
+ * @author Olivier Louvignes <olivier@mg-crea.com> (https://github.com/mgcrea)
+ * @license MIT License, http://www.opensource.org/licenses/MIT
+ */
+/*
+ * Docs sections
+ *
+ * Content blocks for each component or feature.
+ */
+/* Space things out */
+/* Janky fix for preventing navbar from overlapping */
+/* Show code snippets when we have the space */
+.datepicker.dropdown-menu {
+  width: 250px;
+  height: 270px;
+}
+.datepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.datepicker.dropdown-menu tbody {
+  height: 180px;
+}
+.datepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+.datepicker.dropdown-menu.datepicker-mode-1 tbody button,
+.datepicker.dropdown-menu.datepicker-mode-2 tbody button {
+  height: 65px;
+}
+.timepicker.dropdown-menu {
+  padding: 0 4px;
+}
+.timepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.timepicker.dropdown-menu tbody button {
+  padding: 6px;
 }

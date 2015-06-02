@@ -29,9 +29,8 @@
 					},
 					{
 					    "key": "date",
-					    "type": "input",
+					    "type": "date",
 					    "templateOptions": {
-					    	"type": "datetime-local",
 					    	"label": "Date",
 					    	"required": true
 					    }
@@ -56,9 +55,8 @@
 					},
 					{
 					    "key": "time",
-					    "type": "input",
+					    "type": "time",
 					    "templateOptions": {
-					    	"type": "time",
 					    	"label": "Set / Stage Time",
 					    	"required": false
 					    }
@@ -94,18 +92,16 @@
 					},
 					{
 					    "key": "open",
-					    "type": "input",
+					    "type": "time",
 					    "templateOptions": {
-					    	"type": "time",
 					    	"label": "Doors Open",
 					    	"required": false
 					    }
 					},
 					{
 					    "key": "curfew",
-					    "type": "input",
+					    "type": "time",
 					    "templateOptions": {
-					    	"type": "time",
 					    	"label": "Curfew",
 					    	"required": false
 					    }
@@ -169,6 +165,14 @@
 					    "type": "checkbox",
 					    "templateOptions": {
 					    	"label": "Includes Ground Transportation",
+					    	"required": false
+					    }
+					},
+					{
+					    "key": "message",
+					    "type": "textarea",
+					    "templateOptions": {
+					    	"label": "Message to Agent",
 					    	"required": false
 					    }
 					}
