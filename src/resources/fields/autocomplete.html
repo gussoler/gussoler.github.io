@@ -1,15 +1,11 @@
-<autocomplete-alt
-	  id="{{::id}}" 
-	  placeholder="{{options.templateOptions.placeholder}}" 
-	  maxlength="50" 
-	  pause="100"
-	  type="{{options.templateOptions.type}}"
-	  selected-object="model[options.key]" 
-	  data="{{options.templateOptions.options}}" 
-	  search-fields="{{options.templateOptions.searchby}}" 
-	  title-field="{{options.templateOptions.labelProp}}" 
-	  minlength="1" 
-	  input-class="form-control form-control-small" 
-	  match-class="highlight"
-	  template-url = "/src/resources/fields/priv.autocomplete.html"
-/>
+<md-autocomplete flex required
+	md-input-name="{{::id}}"
+	md-search-text="model[options.key+'-tmp']"
+	md-selected-item="model[options.key]"
+	md-items="item in to.querySearch(model[options.key+'-tmp'])"
+	md-item-text="item[to.valueattr]"
+	md-floating-label="{{to.label}}">
+	<md-item-template>
+		<span md-highlight-text="model[options.key+'-tmp']" md-highlight-flags="^i">{{item[to.valueattr]}}</span>
+	</md-item-template>
+</md-autocomplete>

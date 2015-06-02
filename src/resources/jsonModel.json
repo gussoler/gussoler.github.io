@@ -10,12 +10,9 @@
 					    "key": "artist",
 					    "type": "autocomplete",
 					    "templateOptions": {
-					   		"type": "text",
 					    	"label": "Artist Name",
-					    	"placeholder": "Select an artist",
-					    	"searchby": "title",
-					    	"labelProp": "title",
-					    	"required": true
+					    	"required": true,
+					    	"valueattr" : "title"
 					    }
 					},
 					{
@@ -72,7 +69,7 @@
 			        },
 			        {
 					    "key": "lineup",
-					    "type": "inputtags",
+					    "type": "chips",
 					    "templateOptions": {
 					    	"label": "Confirmed Line Up",
 					    	"required": false,
@@ -145,26 +142,32 @@
 					},
 					{
 					    "key": "travel",
-					    "type": "checkbox",
+					    "type": "switch",
 					    "templateOptions": {
 					    	"label": "Includes Travel (Flights, Train, Bus)",
-					    	"required": false
+					    	"required": false,
+					    	"truevalue": "'yes'",
+					    	"falsevalue": "'no'"
 					    }
 					},
 					{
 					    "key": "accommodation",
-					    "type": "checkbox",
+					    "type": "switch",
 					    "templateOptions": {
 					    	"label": "Includes Accommodation",
-					    	"required": false
+					    	"required": false,
+					    	"truevalue": "'yes'",
+					    	"falsevalue": "'no'"
 					    }
 					},
 					{
 					    "key": "transportation",
-					    "type": "checkbox",
+					    "type": "switch",
 					    "templateOptions": {
 					    	"label": "Includes Ground Transportation",
-					    	"required": false
+					    	"required": false,
+					    	"truevalue": "'yes'",
+					    	"falsevalue": "'no'"
 					    }
 					},
 					{
@@ -244,12 +247,9 @@
 					    "key": "venue.country",
 					    "type": "autocomplete",
 					    "templateOptions": {
-					   		"type": "text",
 					    	"label": "Country",
-					    	"placeholder": "Select a country",
-					    	"searchby": "name",
-					    	"labelProp": "name",
-					    	"required": false
+					    	"required": false,
+					    	"valueattr" : "name"
 					    }
 					},
 					{
@@ -366,12 +366,9 @@
 					    "key": "organization.country",
 					    "type": "autocomplete",
 					    "templateOptions": {
-					   		"type": "text",
 					    	"label": "Country",
-					    	"placeholder": "Select a country",
-					    	"searchby": "name",
-					    	"labelProp": "name",
-					    	"required": false
+					    	"required": false,
+					    	"valueattr" : "name"
 					    }
 					},
 					{
