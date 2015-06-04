@@ -6825,8 +6825,48 @@ section.content {
 	padding-top: 0px;
 }
 
-.form-group {
-	margin-top: 30px;
+md-autocomplete[md-floating-label] md-autocomplete-wrap {
+  height: 72px;
+}
+
+md-input-container > md-select {
+  margin: 0;
+  margin-top: 31px;
+  color: rgba(0,0,0,0.26);
+}
+
+md-select.md-default-theme .md-select-label.md-placeholder {
+  color: rgba(0,0,0,0.26);
+}
+
+.picker-fix {
+  border-width: 0 0 1px 0 !important;
+}
+
+md-chips {
+	padding: 2px;
+	padding-bottom: 26px;
+}
+
+.md-chips {
+  display: block;
+  font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  padding: 0 0 3px 0;
+  vertical-align: middle;
+  cursor: text;
+}
+
+.md-chips .md-chip-input-container {
+  display: block;
+  line-height: 32px;
+  margin: 8px 8px 0 0;
+  padding: 2px;
+  float: left;
+}
+
+.md-chips .md-chip-input-container input:not([type]) {
+  width: 230px;
 }
 
 /*

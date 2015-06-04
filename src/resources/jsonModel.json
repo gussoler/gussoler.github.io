@@ -63,7 +63,7 @@
 						"type" : "input",
 						"templateOptions": {
 							"type": "number",
-					    	"label": "Set Duration",
+					    	"label": "Set Duration (In Minutes)",
 					    	"required": false
 					    }
 			        },
@@ -73,8 +73,8 @@
 					    "templateOptions": {
 					    	"label": "Confirmed Line Up",
 					    	"required": false,
-					    	"placeholder": "Enter a tag",
-					    	"secplaceholder": "+Tag"
+					    	"placeholder": "+Confirmed Line Up",
+					    	"secplaceholder": "Confirmed Line Up | + press ENTER"
 					    }
 					},
 					{
@@ -146,8 +146,8 @@
 					    "templateOptions": {
 					    	"label": "Includes Travel (Flights, Train, Bus)",
 					    	"required": false,
-					    	"truevalue": "'yes'",
-					    	"falsevalue": "'no'"
+					    	"truevalue": "true",
+					    	"falsevalue": "false"
 					    }
 					},
 					{
@@ -156,8 +156,8 @@
 					    "templateOptions": {
 					    	"label": "Includes Accommodation",
 					    	"required": false,
-					    	"truevalue": "'yes'",
-					    	"falsevalue": "'no'"
+					    	"truevalue": "true",
+					    	"falsevalue": "false"
 					    }
 					},
 					{
@@ -166,13 +166,13 @@
 					    "templateOptions": {
 					    	"label": "Includes Ground Transportation",
 					    	"required": false,
-					    	"truevalue": "'yes'",
-					    	"falsevalue": "'no'"
+					    	"truevalue": "true",
+					    	"falsevalue": "false"
 					    }
 					},
 					{
 					    "key": "message",
-					    "type": "textarea",
+					    "type": "areatext",
 					    "templateOptions": {
 					    	"label": "Message to Agent",
 					    	"required": false
@@ -217,11 +217,8 @@
 					    "key": "venue.zip",
 					    "type": "input",
 					    "templateOptions": {
-					    	"type": "number",
+					    	"type": "text",
 					    	"label": "Zip Code",
-					        "max": 99999,
-					        "min": 0,
-					        "pattern": "\\d{5}",
 					        "required": false
 					    }
 					},
@@ -336,11 +333,8 @@
 					    "key": "organization.zip",
 					    "type": "input",
 					    "templateOptions": {
-					    	"type": "number",
+					    	"type": "text",
 					    	"label": "Zip Code",
-					        "max": 99999,
-					        "min": 0,
-					        "pattern": "\\d{5}",
 					        "required": false
 					    }
 					},

@@ -4526,7 +4526,8 @@ app.config(function($timepickerProvider) {
     timeFormat: 'hh:mm a',
     length: 5,
     autoclose: false,
-    placement: 'bottom-left'
+    placement: 'bottom-left',
+    timeType: 'iso'
   });
 });
 
@@ -4535,7 +4536,8 @@ app.config(function($datepickerProvider) {
     dateFormat: 'MM/dd/yyyy',
     startWeek: 0,
     autoclose: true,
-    placement: 'bottom-left'
+    placement: 'bottom-left',
+    timezone: 'UTC'
   });
 })
 
@@ -4550,8 +4552,7 @@ app.run(function(formlyConfig, formlyValidationMessages) {
     });
 	formlyConfig.setType({
     	name : 'chips',
-		templateUrl : '/src/resources/fields/chips.html',
-		extends: 'select'
+		templateUrl : '/src/resources/fields/chips.html'
     });
 	formlyConfig.setType({
     	name : 'time',
@@ -4566,12 +4567,26 @@ app.run(function(formlyConfig, formlyValidationMessages) {
 	formlyConfig.setType({
     	name : 'select',
 		templateUrl : '/src/resources/fields/select.html',
-		extends: 'input'
+		overwriteOk: true
     });
 	formlyConfig.setType({
     	name : 'switch',
 		templateUrl : '/src/resources/fields/switch.html'
     });
+	formlyConfig.setType({
+    	name : 'areatext',
+		templateUrl : '/src/resources/fields/areatext.html'
+    });
+	formlyConfig.setWrapper([
+         {
+           template: [
+             '<md-input-container>',
+             '<formly-transclude></formly-transclude>',
+             '</md-input-container>\n'
+           ].join(' '),
+           types: 'select',
+         }
+    ]);
 });
 
 app.factory('external', function($http) {
@@ -4609,10 +4624,7 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 	
 	vm.model = {
 		artist : 14,
-		lineup : [],
-		travel : 'no',
-		accommodation : 'no',
-		transportation : 'no' /*,
+		lineup : [] /*,
 		time : new Date(1970, 0, 1, 10, 30, 40),
 		date : new Date() */
 	}
