@@ -6830,17 +6830,12 @@ md-autocomplete[md-floating-label] md-autocomplete-wrap {
 }
 
 md-input-container > md-select {
-  margin: 0;
-  margin-top: 31px;
+  margin: 32px 0 0 0;
   color: rgba(0,0,0,0.26);
 }
 
 md-select.md-default-theme .md-select-label.md-placeholder {
   color: rgba(0,0,0,0.26);
-}
-
-.picker-fix {
-  border-width: 0 0 1px 0 !important;
 }
 
 md-chips {
@@ -6867,6 +6862,19 @@ md-chips {
 
 .md-chips .md-chip-input-container input:not([type]) {
   width: 230px;
+}
+
+.currency-container {
+	display: inline-block;
+}
+
+.currency-container label {
+	top: 8px;
+}
+
+.currency-container input {
+	padding-top: 7px;
+	/* width: 478px; */
 }
 
 /*

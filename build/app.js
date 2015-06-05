@@ -4512,7 +4512,7 @@ return /******/ (function(modules) { // webpackBootstrap
     $templateCache.put('typeahead/typeahead.tpl.html', '<ul tabindex="-1" class="typeahead dropdown-menu" ng-show="$isVisible()" role="select"><li role="presentation" ng-repeat="match in $matches" ng-class="{active: $index == $activeIndex}"><a role="menuitem" tabindex="-1" ng-click="$select($index, $event)" ng-bind="match.label"></a></li></ul>');
   } ]);
 })(window, document);
-var app = angular.module('gigwellForm', [ 'formly', 'formlyMaterial', 'mgcrea.ngStrap' ] );
+var app = angular.module('gigwellForm', [ 'formly', 'formlyMaterial', 'ngMessages', 'mgcrea.ngStrap' ] );
 
 app.config(function($mdThemingProvider) {
     // Configure a dark theme with primary foreground yellow
@@ -4546,6 +4546,16 @@ app.run(function(formlyConfig, formlyValidationMessages) {
     	name : 'columnheader',
 		templateUrl : '/src/resources/fields/columnheader.html'
     });
+    formlyConfig.setType({
+    	name : 'input',
+		templateUrl : '/src/resources/fields/input.html',
+		overwriteOk: true
+    });
+    formlyConfig.setType({
+    	name : 'select',
+		templateUrl : '/src/resources/fields/select.html',
+		overwriteOk: true
+    });
 	formlyConfig.setType({
     	name : 'autocomplete',
 		templateUrl : '/src/resources/fields/autocomplete.html'
@@ -4556,18 +4566,11 @@ app.run(function(formlyConfig, formlyValidationMessages) {
     });
 	formlyConfig.setType({
     	name : 'time',
-		templateUrl : '/src/resources/fields/timepicker.html',
-		extends: 'input'
+		templateUrl : '/src/resources/fields/timepicker.html'
     });
 	formlyConfig.setType({
     	name : 'date',
-		templateUrl : '/src/resources/fields/datepicker.html',
-		extends: 'input'
-    });
-	formlyConfig.setType({
-    	name : 'select',
-		templateUrl : '/src/resources/fields/select.html',
-		overwriteOk: true
+		templateUrl : '/src/resources/fields/datepicker.html'
     });
 	formlyConfig.setType({
     	name : 'switch',
@@ -4577,16 +4580,10 @@ app.run(function(formlyConfig, formlyValidationMessages) {
     	name : 'areatext',
 		templateUrl : '/src/resources/fields/areatext.html'
     });
-	formlyConfig.setWrapper([
-         {
-           template: [
-             '<md-input-container>',
-             '<formly-transclude></formly-transclude>',
-             '</md-input-container>\n'
-           ].join(' '),
-           types: 'select',
-         }
-    ]);
+	formlyConfig.setType({
+    	name : 'currency',
+		templateUrl : '/src/resources/fields/currency.html'
+    });
 });
 
 app.factory('external', function($http) {
@@ -4624,7 +4621,13 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 	
 	vm.model = {
 		artist : 14,
-		lineup : [] /*,
+		lineup : [],
+		offer : {
+			currencyType: "USD"
+		},
+		price: {
+			currencyType: "USD"
+		}/*,
 		time : new Date(1970, 0, 1, 10, 30, 40),
 		date : new Date() */
 	}
@@ -4654,11 +4657,6 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		alert(JSON.stringify(vm.model), null, 2);
 	};
 	
-	vm.cancel = cancel;
-	function cancel() {
-		alert('close');
-	}
-	
 	var functions = {};
 	functions['artist'] = function($scope, external) {
 		// @ngInject
@@ -4671,7 +4669,9 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 			$scope.to.querySearch = function(query) {
 				if (!query || !$scope.to.data ||
 					!$scope.to.data.length || $scope.to.data.length == 0) return [];
-				return $scope.to.data.filter( $scope.to.createFilterFor(query) );
+				var result = $scope.to.data.filter( $scope.to.createFilterFor(query) );
+				if (result.length == 0) return $scope.to.data;
+				return result;
 			}
 			
 			$scope.to.createFilterFor = function createFilterFor(query) {
@@ -4683,7 +4683,16 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 			}
 		}
 	}
-	functions['currency'] = function($scope, external) {
+	functions['offer'] = function($scope, external) {
+		// @ngInject
+		$scope.to.loading = external.getCurrencies().then(function(response) {
+			$scope.to.data = response.data;
+			// note, the line above is shorthand for:
+			// $scope.options.templateOptions.options = data;
+			return response;
+		});
+	}
+	functions['price'] = function($scope, external) {
 		// @ngInject
 		$scope.to.loading = external.getCurrencies().then(function(response) {
 			$scope.to.data = response.data;
@@ -4701,7 +4710,7 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 			return response;
 		});
 	}
-	functions['venue.country'] = function($scope, external) {
+	functions['venue_country'] = function($scope, external) {
 		// @ngInject
 		$scope.to.loading = external.getCountries().then(function(response) {
 			$scope.to.data = response.data;
@@ -4722,7 +4731,7 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		      };
 		}
 	}
-	functions['organization.country'] = function($scope, external) {
+	functions['organization_country'] = function($scope, external) {
 		// @ngInject
 		$scope.to.loading = external.getCountries().then(function(response) {
 			$scope.to.data = response.data;

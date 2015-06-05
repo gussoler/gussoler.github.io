@@ -1,6 +1,6 @@
 <md-input-container ng-if="to.required">
 	<label>{{to.label}}</label>
-	<textarea required ng-model="model[options.key]" name="{{::id}}"></textarea>
+	<input required ng-model="model[options.key]" name="{{::id}}">
 	<div ng-messages="form.{{::id}}.$error" role="alert">
       <div ng-message="required">* Required</div>
     </div>
@@ -8,5 +8,5 @@
 
 <md-input-container ng-if="!to.required">
 	<label>{{to.label}}</label>
-	<textarea ng-model="model[options.key]"></textarea>
+	<input ng-model="model[options.key]">
 </md-input-container>

@@ -16,13 +16,14 @@
 					    }
 					},
 					{
-					    "key": "offer",
-					    "type": "input",
-					    "templateOptions": {
-					    	"type": "number",
-					    	"label": "Offer Amount",
-					    	"required": false
-					    }
+		               "key": "offer",
+		               "type": "currency",
+		               "templateOptions":{
+		               		"label": "Offer Amount",
+		               		"type": "number",
+					    	"valueProp": "value",
+					    	"labelProp": "displayName"
+		               }
 					},
 					{
 					    "key": "date",
@@ -33,12 +34,11 @@
 					    }
 					},
 					{
-					    "key": "event",
+					    "key": "name",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Event Name",
-					    	"required": false
+					    	"label": "Event Name"
 					    }
 					},
 					{
@@ -46,16 +46,14 @@
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "url",
-					    	"label": "Event Website",
-					    	"required": false
+					    	"label": "Event Website"
 					    }
 					},
 					{
 					    "key": "time",
 					    "type": "time",
 					    "templateOptions": {
-					    	"label": "Set / Stage Time",
-					    	"required": false
+					    	"label": "Set / Stage Time"
 					    }
 					},
 					{
@@ -63,8 +61,7 @@
 						"type" : "input",
 						"templateOptions": {
 							"type": "number",
-					    	"label": "Set Duration (In Minutes)",
-					    	"required": false
+					    	"label": "Set Duration (In Minutes)"
 					    }
 			        },
 			        {
@@ -72,7 +69,6 @@
 					    "type": "chips",
 					    "templateOptions": {
 					    	"label": "Confirmed Line Up",
-					    	"required": false,
 					    	"placeholder": "+Confirmed Line Up",
 					    	"secplaceholder": "Confirmed Line Up | + press ENTER"
 					    }
@@ -81,7 +77,6 @@
 		               "key": "type",
 		               "type": "select",
 		               "templateOptions":{
-					    	"required": false,
 					    	"valueProp": "value",
 					    	"labelProp": "value",
 					    	"placeholder": "Event Type"
@@ -91,16 +86,14 @@
 					    "key": "open",
 					    "type": "time",
 					    "templateOptions": {
-					    	"label": "Doors Open",
-					    	"required": false
+					    	"label": "Doors Open"
 					    }
 					},
 					{
 					    "key": "curfew",
 					    "type": "time",
 					    "templateOptions": {
-					    	"label": "Curfew",
-					    	"required": false
+					    	"label": "Curfew"
 					    }
 					},
 					{
@@ -108,8 +101,7 @@
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "number",
-					    	"label": "Age",
-					    	"required": false
+					    	"label": "Age"
 					    }
 					},
 					{
@@ -117,55 +109,42 @@
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "number",
-					    	"label": "Amount of Tickets",
-					    	"required": false
+					    	"label": "Amount of Tickets"
 					    }
 					},
 					{
-		               "key": "currency",
-		               "type": "select",
+		               "key": "price",
+		               "type": "currency",
 		               "templateOptions":{
-					    	"required": false,
+		               		"label": "Ticket Price",
+		               		"type": "number",
 					    	"valueProp": "value",
-					    	"labelProp": "displayName",
-					    	"placeholder": "Ticket Currency"
+					    	"labelProp": "displayName"
 		               }
 					},
 					{
-					    "key": "price",
-					    "type": "input",
-					    "templateOptions": {
-					    	"type": "number",
-					    	"label": "Ticket Price",
-					    	"required": false
-					    }
-					},
-					{
-					    "key": "travel",
+					    "key": "logistics_travel",
 					    "type": "switch",
 					    "templateOptions": {
 					    	"label": "Includes Travel (Flights, Train, Bus)",
-					    	"required": false,
 					    	"truevalue": "true",
 					    	"falsevalue": "false"
 					    }
 					},
 					{
-					    "key": "accommodation",
+					    "key": "logistics_accommodation",
 					    "type": "switch",
 					    "templateOptions": {
 					    	"label": "Includes Accommodation",
-					    	"required": false,
 					    	"truevalue": "true",
 					    	"falsevalue": "false"
 					    }
 					},
 					{
-					    "key": "transportation",
+					    "key": "logistics_transportation",
 					    "type": "switch",
 					    "templateOptions": {
 					    	"label": "Includes Ground Transportation",
-					    	"required": false,
 					    	"truevalue": "true",
 					    	"falsevalue": "false"
 					    }
@@ -174,8 +153,7 @@
 					    "key": "message",
 					    "type": "areatext",
 					    "templateOptions": {
-					    	"label": "Message to Agent",
-					    	"required": false
+					    	"label": "Message to Agent"
 					    }
 					}
 			],
@@ -187,111 +165,99 @@
 					    }
 			        },
 					{
-					    "key": "venue.name",
+					    "key": "venue_name",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Venue Name",
-					    	"required": false
+					    	"label": "Venue Name"
 					    }
 					},
 					{
-					    "key": "venue.address1",
+					    "key": "venue_address1",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Address 1",
-					    	"required": false
+					    	"label": "Address 1"
 					    }
 					},
 					{
-					    "key": "venue.address2",
+					    "key": "venue_address2",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Address 2",
-					    	"required": false
+					    	"label": "Address 2"
 					    }
 					},
 					{
-					    "key": "venue.zip",
+					    "key": "venue_zip",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Zip Code",
-					        "required": false
+					    	"label": "Zip Code"
 					    }
 					},
 					{
-					    "key": "venue.city",
+					    "key": "venue_city",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "City",
-					    	"required": false
+					    	"label": "City"
 					    }
 					},
 					{
-					    "key": "venue.state",
+					    "key": "venue_state",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "State / Province",
-					    	"required": false
+					    	"label": "State / Province"
 					    }
 					},
 					{
-					    "key": "venue.country",
+					    "key": "venue_country",
 					    "type": "autocomplete",
 					    "templateOptions": {
 					    	"label": "Country",
-					    	"required": false,
 					    	"valueattr" : "name"
 					    }
 					},
 					{
-					    "key": "venue.phone",
+					    "key": "venue_phone",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "tel",
-					    	"label": "Phone",
-					    	"required": false
+					    	"label": "Phone"
 					    }
 					},
 					{
-					    "key": "venue.website",
+					    "key": "venue_website",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "url",
-					    	"label": "Venue Website",
-					    	"required": false
+					    	"label": "Venue Website"
 					    }
 					},
 					{
-					    "key": "venue.facebook",
+					    "key": "venue_facebook",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "url",
-					    	"label": "Venue Facebook Page",
-					    	"required": false
+					    	"label": "Venue Facebook Page"
 					    }
 					},
 					{
-					    "key": "venue.capacity",
+					    "key": "venue_capacity",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "number",
-					    	"label": "Capacity",
-					    	"required": false
+					    	"label": "Capacity"
 					    }
 					},
 					{
-					    "key": "venue.airport",
+					    "key": "venue_airport",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Closest Airport / Station",
-					    	"required": false
+					    	"label": "Closest Airport / Station"
 					    }
 					}
 			],
@@ -303,93 +269,83 @@
 					    }
 			        },
 					{
-					    "key": "organization.name",
+					    "key": "organization_name",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Organization Name",
-					    	"required": false
+					    	"label": "Organization Name"
 					    }
 					},
 					{
-					    "key": "organization.address1",
+					    "key": "organization_address1",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Address 1",
-					    	"required": false
+					    	"label": "Address 1"
 					    }
 					},
 					{
-					    "key": "organization.address2",
+					    "key": "organization_address2",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Address 2",
-					    	"required": false
+					    	"label": "Address 2"
 					    }
 					},
 					{
-					    "key": "organization.zip",
+					    "key": "organization_zip",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Zip Code",
-					        "required": false
+					    	"label": "Zip Code"
 					    }
 					},
 					{
-					    "key": "organization.city",
+					    "key": "organization_city",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "City",
-					    	"required": false
+					    	"label": "City"
 					    }
 					},
 					{
-					    "key": "organization.state",
+					    "key": "organization_state",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "State / Province",
-					    	"required": false
+					    	"label": "State / Province"
 					    }
 					},
 					{
-					    "key": "organization.country",
+					    "key": "organization_country",
 					    "type": "autocomplete",
 					    "templateOptions": {
 					    	"label": "Country",
-					    	"required": false,
 					    	"valueattr" : "name"
 					    }
 					},
 					{
-					    "key": "organization.phone",
+					    "key": "organization_phone",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "tel",
-					    	"label": "Phone",
-					    	"required": false
+					    	"label": "Phone"
 					    }
 					},
 					{
-					    "key": "organization.website",
+					    "key": "organization_website",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "url",
-					    	"label": "Company Website",
-					    	"required": false
+					    	"label": "Company Website"
 					    }
 					},
 					{
-					    "key": "organization.vat",
+					    "key": "organization_vat",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "VAT / Tax Number",
-					    	"required": false
+					    	"label": "VAT / Tax Number"
 					    }
 					}
 			],
@@ -401,7 +357,7 @@
 					    }
 			        },
 					{
-					    "key": "promoter.name",
+					    "key": "promoter_name",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
@@ -410,48 +366,44 @@
 					    }
 					},
 					{
-					    "key": "promoter.lastname",
+					    "key": "promoter_lastname",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Last Name",
-					    	"required": false
+					    	"label": "Last Name"
 					    }
 					},
 					{
-					    "key": "promoter.phone",
+					    "key": "promoter_phone",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "tel",
-					    	"label": "Phone",
-					    	"required": false
+					    	"label": "Phone"
 					    }
 					},
 					{
-					    "key": "promoter.email",
+					    "key": "promoter_email",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "email",
 					    	"label": "Email",
-					        "required": true
+					    	"required": true
 					    }
 					},
 					{
-					    "key": "promoter.skype",
+					    "key": "promoter_skype",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "Skype",
-					        "required": false
+					    	"label": "Skype"
 					    }
 					},
 					{
-					    "key": "promoter.vat",
+					    "key": "promoter_vat",
 					    "type": "input",
 					    "templateOptions": {
 					    	"type": "text",
-					    	"label": "VAT / Tax Number",
-					    	"required": false
+					    	"label": "VAT / Tax Number"
 					    }
 					}
 			]

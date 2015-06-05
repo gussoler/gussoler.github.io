@@ -1,5 +1,14 @@
-<input type="text" 
-	class="form-control picker-fix" 
-	ng-model="model[options.key]" 
-	name="model[options.key]" 
-	bs-timepicker/>
+<md-input-container ng-if="to.required">
+	<label>{{to.label}}</label>
+	<input required type="text" class="form-control"
+		ng-model="model[options.key]" name="{{::id}}" bs-timepicker>
+	<div ng-messages="form.{{::id}}.$error" role="alert">
+      <div ng-message="required">* Required</div>
+    </div>
+</md-input-container>
+
+<md-input-container ng-if="!to.required">
+	<label>{{to.label}}</label>
+	<input type="text" class="form-control"
+		ng-model="model[options.key]" bs-timepicker>
+</md-input-container>
