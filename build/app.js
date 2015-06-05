@@ -4599,16 +4599,16 @@ app.factory('external', function($http) {
 		return $http.get('/src/resources/jsonModel.json');
 	}
 	
-	function getCurrencies() {
-		return $http.get('/src/resources/currencies.default.json');
-	}
-	
-	function getEventTypes() {
-		return $http.get('/src/resources/eventTypes.default.json');
-	}
-	
 	function getCountries() {
 		return $http.get('/src/resources/countries.default.json');
+	}
+	
+	function getCurrencies(id) {
+		return $http.get('//green.dev.gig-well.com/api/agency/'+id+'/booknow/presets/currencies');
+	}
+	
+	function getEventTypes(id) {
+		return $http.get('//green.dev.gig-well.com/api/agency/'+id+'/booknow/presets/eventTypes');
 	}
 	
 	function getArtists(id) {
@@ -4618,9 +4618,11 @@ app.factory('external', function($http) {
 
 app.controller('MainCtrl', function MainCtrl($scope, external) {
 	var vm = this;
+	var agencyId = getFromUrl('agency-id');
+	if (agencyId == null) return;
 	
 	vm.model = {
-		artist : 14,
+		agency : agencyId,
 		lineup : [],
 		offer : {
 			currencyType: "USD"
@@ -4632,23 +4634,32 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		date : new Date() */
 	}
 	
+	var artistId = getFromUrl('artist-id');
+	if (artistId!=null) vm.model.artist_sel = artistId;
+	
 	external.getModelForm().then(function(response) {
-		
+		var hideForm;
+		var forms = [];
 		angular.forEach(response.data, function(form, i) {
+			hideForm = false;
 			angular.forEach(form, function(field, idx) {
-				if (functions[field.key]) {
-					field.controller = functions[field.key];
+				if (idx == 0 && field.type == 'columnheader')
+					hideForm = (field.hide === true);
+				else if (!hideForm) {
+					if (artistId != null && field.key == 'artist')
+						field.hide = true;
+					else if (field.hide !== true && functions[field.key])
+						field.controller = functions[field.key];
 				}
 			});
+			if (!hideForm) forms.push(form);
 		});
 		
-		vm.formFields1 = response.data[0];
-		vm.formFields2 = response.data[1];
-		vm.formFields3 = response.data[2];
-		vm.formFields4 = response.data[3];
-		vm.originalFields = angular.copy(
-				[vm.formFields1, vm.formFields2, vm.formFields3, vm.formFields4]
-		);
+		vm.formFields1 = forms[0];
+		vm.formFields2 = forms[1];
+		vm.formFields3 = forms[2];
+		vm.formFields4 = forms[3];
+		vm.originalFields = angular.copy( forms );
 	});
 	
 	/* function definitions */
@@ -4657,61 +4668,67 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		alert(JSON.stringify(vm.model), null, 2);
 	};
 	
+	function getFromUrl(search) {
+		try {
+			var query = location.search.substring(1);
+			var vars = query.split("&");
+			for (var i=0;i<vars.length;i++) {
+			    var pair = vars[i].split("=");
+			    if (pair.length == 2 && pair[0] == search) {
+			    	var aux = pair[1].trim();
+			    	return aux == ''? null : aux;
+			    }
+			}
+		} catch (err) {
+			return null;
+		}
+	};
+	
 	var functions = {};
 	functions['artist'] = function($scope, external) {
 		// @ngInject
-		if ($scope.model.artist) {
-			$scope.to.loading = external.getArtists($scope.model.artist).then(function(response) {
-				$scope.to.data = response.data.data[$scope.model.artist].artists;
-				return response;
-			});
-			
-			$scope.to.querySearch = function(query) {
-				if (!query || !$scope.to.data ||
-					!$scope.to.data.length || $scope.to.data.length == 0) return [];
-				var result = $scope.to.data.filter( $scope.to.createFilterFor(query) );
-				if (result.length == 0) return $scope.to.data;
-				return result;
-			}
-			
-			$scope.to.createFilterFor = function createFilterFor(query) {
-			      var lowercaseQuery = angular.lowercase(query);
-			      return function filterFn(artist) {
-			    	  if (!artist.title || !artist.title.toLowerCase) return false;
-			    	  return (artist.title.toLowerCase().indexOf(lowercaseQuery) !== -1);
-			      };
-			}
+		$scope.to.loading = external.getArtists($scope.model.agency).then(function(response) {
+			$scope.to.data = response.data.data[$scope.model.agency].artists;
+			// note, the line above is shorthand for:
+			// $scope.options.templateOptions.data = [];
+			return response;
+		});
+		
+		$scope.to.querySearch = function(query) {
+			if (!query || !$scope.to.data ||
+				!$scope.to.data.length || $scope.to.data.length == 0) return [];
+			var result = $scope.to.data.filter( $scope.to.createFilterFor(query) );
+			if (result.length == 0) return $scope.to.data;
+			return result;
+		}
+		
+		$scope.to.createFilterFor = function createFilterFor(query) {
+		      var lowercaseQuery = angular.lowercase(query);
+		      return function filterFn(artist) {
+		    	  if (!artist.title || !artist.title.toLowerCase) return false;
+		    	  return (artist.title.toLowerCase().indexOf(lowercaseQuery) !== -1);
+		      };
 		}
 	}
 	functions['offer'] = function($scope, external) {
-		// @ngInject
-		$scope.to.loading = external.getCurrencies().then(function(response) {
-			$scope.to.data = response.data;
-			// note, the line above is shorthand for:
-			// $scope.options.templateOptions.options = data;
+		$scope.to.loading = external.getCurrencies($scope.model.agency).then(function(response) {
+			$scope.to.data = response.data.data.currencies;
 			return response;
 		});
 	}
 	functions['price'] = function($scope, external) {
-		// @ngInject
-		$scope.to.loading = external.getCurrencies().then(function(response) {
-			$scope.to.data = response.data;
-			// note, the line above is shorthand for:
-			// $scope.options.templateOptions.options = data;
+		$scope.to.loading = external.getCurrencies($scope.model.agency).then(function(response) {
+			$scope.to.data = response.data.data.currencies;
 			return response;
 		});
 	}
 	functions['type'] = function($scope, external) {
-		// @ngInject
-		$scope.to.loading = external.getEventTypes().then(function(response) {
-			$scope.to.data = response.data;
-			// note, the line above is shorthand for:
-			// $scope.options.templateOptions.options = data;
+		$scope.to.loading = external.getEventTypes($scope.model.agency).then(function(response) {
+			$scope.to.data = response.data.data.eventTypes;
 			return response;
 		});
 	}
 	functions['venue_country'] = function($scope, external) {
-		// @ngInject
 		$scope.to.loading = external.getCountries().then(function(response) {
 			$scope.to.data = response.data;
 			return response;
@@ -4732,7 +4749,6 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		}
 	}
 	functions['organization_country'] = function($scope, external) {
-		// @ngInject
 		$scope.to.loading = external.getCountries().then(function(response) {
 			$scope.to.data = response.data;
 			return response;

@@ -2,6 +2,7 @@
 			[
 					{
 			            "type": "columnheader",
+			            "hide": false,
 					    "templateOptions": {
 					    	"label": "Event Details"
 					    }
@@ -9,6 +10,7 @@
 			        {
 					    "key": "artist",
 					    "type": "autocomplete",
+					    "hide": false,
 					    "templateOptions": {
 					    	"label": "Artist Name",
 					    	"required": true,
