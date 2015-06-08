@@ -4544,48 +4544,48 @@ app.config(function($datepickerProvider) {
 app.run(function(formlyConfig, formlyValidationMessages) {
 	formlyConfig.setType({
     	name : 'columnheader',
-		templateUrl : '/src/resources/fields/columnheader.html'
+		templateUrl : 'columnheader.html'
+		/* templateUrl : '/src/resources/fields/columnheader.html' */
     });
     formlyConfig.setType({
     	name : 'input',
-		templateUrl : '/src/resources/fields/input.html',
+		templateUrl : 'input.html',
 		overwriteOk: true
     });
     formlyConfig.setType({
     	name : 'select',
-		templateUrl : '/src/resources/fields/select.html',
+		templateUrl : 'select.html',
 		overwriteOk: true
     });
 	formlyConfig.setType({
     	name : 'autocomplete',
-		templateUrl : '/src/resources/fields/autocomplete.html'
+		templateUrl : 'autocomplete.html'
     });
 	formlyConfig.setType({
     	name : 'chips',
-		templateUrl : '/src/resources/fields/chips.html'
+		templateUrl : 'chips.html'
     });
 	formlyConfig.setType({
     	name : 'time',
-		templateUrl : '/src/resources/fields/timepicker.html'
+		templateUrl : 'timepicker.html'
     });
 	formlyConfig.setType({
     	name : 'date',
-		templateUrl : '/src/resources/fields/datepicker.html'
+		templateUrl : 'datepicker.html'
     });
 	formlyConfig.setType({
     	name : 'switch',
-		templateUrl : '/src/resources/fields/switch.html'
+		templateUrl : 'switch.html'
     });
 	formlyConfig.setType({
     	name : 'areatext',
-		templateUrl : '/src/resources/fields/areatext.html'
+		templateUrl : 'areatext.html'
     });
 	formlyConfig.setType({
     	name : 'currency',
-		templateUrl : '/src/resources/fields/currency.html'
+		templateUrl : 'currency.html'
     });
 });
-
 app.factory('external', function($http) {
 	return {
 		getModelForm : getModelForm,
@@ -4616,9 +4616,66 @@ app.factory('external', function($http) {
 	}
 });
 
-app.controller('MainCtrl', function MainCtrl($scope, external) {
+app.factory('commons', function($http) {
+	return {
+		getFromUrl : getFromUrl
+	};
+	
+	function getFromUrl(search) {
+		try {
+			var query = location.search.substring(1);
+			var vars = query.split("&");
+			for (var i=0;i<vars.length;i++) {
+			    var pair = vars[i].split("=");
+			    if (pair.length == 2 && pair[0] == search) {
+			    	var aux = pair[1].trim();
+			    	return aux == ''? null : aux;
+			    }
+			}
+		} catch (err) {
+			return null;
+		}
+	}
+});
+/**
+ *
+ * @ngdoc directive
+ * @name notifyIframeParentResize
+ * @restrict A
+ *
+ * @description
+ *
+ **/
+app.directive('notifyIframeParentResize', function(commons) {
+	return {
+		restrict : 'A',
+		link : function($scope, $element, $attrs) {
+			var origin = commons.getFromUrl('iframeOrigin');
+			if (!origin) return;
+			
+			window.addEventListener('resize', notifyResize);
+			notifyResize();
+			
+			$scope.$on('$destroy', function() {
+				window.removeEventListener('resize', notifyResize);
+			});
+
+			function notifyResize() {
+				window.setTimeout(function() {
+					var data = {
+						name : 'gigwell:resize:iframe',
+						height : $element[0].scrollHeight+10,
+						width : $element[0].scrollWidth
+					};
+					parent.postMessage(JSON.stringify(data), unescape(origin));
+				}, 300);
+			}
+		}
+	};
+});
+app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 	var vm = this;
-	var agencyId = getFromUrl('agency-id');
+	var agencyId = commons.getFromUrl('agency-id');
 	if (agencyId == null) return;
 	
 	vm.model = {
@@ -4634,8 +4691,8 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		date : new Date() */
 	}
 	
-	var artistId = getFromUrl('artist-id');
-	if (artistId!=null) vm.model.artist_sel = artistId;
+	var artistId = commons.getFromUrl('artist-id');
+	if (artistId!=null) vm.artist_sel = artistId;
 	
 	external.getModelForm().then(function(response) {
 		var hideForm;
@@ -4665,29 +4722,52 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 	/* function definitions */
 	vm.onSubmit = onSubmit;
 	function onSubmit() {
-		alert(JSON.stringify(vm.model), null, 2);
+		var data = {};
+		angular.forEach(vm.model, function(value, key) {
+			if (value == null || key.split('-').length > 1 && key.split('-')[1] == 'tmp') {
+				// skip
+			} else if (key == 'artist') {
+				data['artistEntityId'] = value.entityId;
+				
+			} else if (key == 'agency') {
+				data['agencyEntityId'] = value;
+				
+			} else if (key.split('_').length > 1) {
+				var aux = key.split('_');
+				if (!data[aux[0]]) data[aux[0]] = {};
+				data[aux[0]][aux[1]] = value;
+				
+			} else {
+				data[key] = value;
+			}
+		}, data);
+		
+		if (!data['artistEntityId'] && vm.artist_sel) {
+			data['artistEntityId'] = vm.artist_sel;
+		}
+		
+		var post = {};
+		post['request'] = data;
+		
+//		console.log('default', JSON.stringify(vm.model));
+//		console.log('parsed', JSON.stringify(post));
+		alert(JSON.stringify(post), null, 2);
 	};
 	
-	function getFromUrl(search) {
-		try {
-			var query = location.search.substring(1);
-			var vars = query.split("&");
-			for (var i=0;i<vars.length;i++) {
-			    var pair = vars[i].split("=");
-			    if (pair.length == 2 && pair[0] == search) {
-			    	var aux = pair[1].trim();
-			    	return aux == ''? null : aux;
-			    }
-			}
-		} catch (err) {
-			return null;
-		}
+	vm.onCancel = onCancel;
+	function onCancel() {
+		var origin = commons.getFromUrl('iframeOrigin');
+		if (!origin) return;
+		var data = {
+			name : 'gigwell:close:iframe'
+		};
+		parent.postMessage(JSON.stringify(data), unescape(origin));
 	};
 	
 	var functions = {};
 	functions['artist'] = function($scope, external) {
 		// @ngInject
-		$scope.to.loading = external.getArtists($scope.model.agency).then(function(response) {
+		external.getArtists($scope.model.agency).then(function(response) {
 			$scope.to.data = response.data.data[$scope.model.agency].artists;
 			// note, the line above is shorthand for:
 			// $scope.options.templateOptions.data = [];
@@ -4711,25 +4791,25 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		}
 	}
 	functions['offer'] = function($scope, external) {
-		$scope.to.loading = external.getCurrencies($scope.model.agency).then(function(response) {
+		external.getCurrencies($scope.model.agency).then(function(response) {
 			$scope.to.data = response.data.data.currencies;
 			return response;
 		});
 	}
 	functions['price'] = function($scope, external) {
-		$scope.to.loading = external.getCurrencies($scope.model.agency).then(function(response) {
+		external.getCurrencies($scope.model.agency).then(function(response) {
 			$scope.to.data = response.data.data.currencies;
 			return response;
 		});
 	}
 	functions['type'] = function($scope, external) {
-		$scope.to.loading = external.getEventTypes($scope.model.agency).then(function(response) {
+		external.getEventTypes($scope.model.agency).then(function(response) {
 			$scope.to.data = response.data.data.eventTypes;
 			return response;
 		});
 	}
 	functions['venue_country'] = function($scope, external) {
-		$scope.to.loading = external.getCountries().then(function(response) {
+		external.getCountries().then(function(response) {
 			$scope.to.data = response.data;
 			return response;
 		});
@@ -4744,12 +4824,12 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		      var lowercaseQuery = angular.lowercase(query);
 		      return function filterFn(country) {
 		    	  if (!country.name || !country.name.toLowerCase) return false;
-		    	  return (country.name.toLowerCase().indexOf(lowercaseQuery) !== -1);
+		    	  return (country.name.toLowerCase().indexOf(lowercaseQuery) == 0);
 		      };
 		}
 	}
 	functions['organization_country'] = function($scope, external) {
-		$scope.to.loading = external.getCountries().then(function(response) {
+		external.getCountries().then(function(response) {
 			$scope.to.data = response.data;
 			return response;
 		});
@@ -4764,7 +4844,7 @@ app.controller('MainCtrl', function MainCtrl($scope, external) {
 		      var lowercaseQuery = angular.lowercase(query);
 		      return function filterFn(country) {
 		    	  if (!country.name || !country.name.toLowerCase) return false;
-		    	  return (country.name.toLowerCase().indexOf(lowercaseQuery) !== -1);
+		    	  return (country.name.toLowerCase().indexOf(lowercaseQuery) == 0);
 		      };
 		}
 	}
