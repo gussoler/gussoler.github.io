@@ -4654,21 +4654,73 @@ app.directive('notifyIframeParentResize', function(commons) {
 			if (!origin) return;
 			
 			window.addEventListener('resize', notifyResize);
-			notifyResize();
 			
 			$scope.$on('$destroy', function() {
 				window.removeEventListener('resize', notifyResize);
 			});
+			
+			var render = function(newValue, oldValue) {
+				if (newValue) {
+					notifyResize();
+					renderWatcher();
+				}
+		    };
+		    var renderWatcher = $scope.$watch("vm.jsonModel", render);
 
 			function notifyResize() {
-				window.setTimeout(function() {
-					var data = {
-						name : 'gigwell:resize:iframe',
-						height : $element[0].scrollHeight+10,
-						width : $element[0].scrollWidth
-					};
-					parent.postMessage(JSON.stringify(data), unescape(origin));
-				}, 300);
+				var data = {
+					name : 'gigwell:resize:iframe',
+					height : $element[0].scrollHeight+10,
+					width : $element[0].scrollWidth
+				};
+				parent.postMessage(JSON.stringify(data), unescape(origin));
+			}
+		}
+	};
+});
+/**
+ *
+ * @ngdoc directive
+ * @name notifyIframeParentResize
+ * @restrict A
+ *
+ * @description
+ *
+ **/
+app.directive('receivePreviewModel', function(commons) {
+	return {
+		restrict : 'E',
+		link : function($scope, $element, $attrs) {
+			var preview = commons.getFromUrl('preview');
+			var origin = commons.getFromUrl('iframeOrigin');
+			if (!origin || preview != 'true') return;
+			
+			window.addEventListener('message', getPreviewData);
+			
+			var data = {
+				name : 'gigwell:preview:sendData'
+			};
+			parent.postMessage(JSON.stringify(data), unescape(origin));
+			
+			$scope.$on('$destroy', function() {
+				window.removeEventListener('message', getPreviewData);
+			});
+
+			function getPreviewData(event) {
+				if (event && event.data) {
+					try {
+						var data = JSON.parse(event.data);
+						if (data !== null) {
+							if (data.name === 'gigwell:preview:data') {
+								$scope.$apply(function() {
+									$scope.vm.jsonModel = data.json;
+								});
+							}
+						}
+					} catch (e) {
+						/* TODO: report failure stats */
+					}
+				}
 			}
 		}
 	};
@@ -4676,7 +4728,7 @@ app.directive('notifyIframeParentResize', function(commons) {
 app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 	var vm = this;
 	var agencyId = commons.getFromUrl('agency-id');
-	if (agencyId == null) return;
+	if (!agencyId) return;
 	
 	vm.model = {
 		agency : agencyId,
@@ -4691,13 +4743,30 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 		date : new Date() */
 	}
 	
+	var preview = commons.getFromUrl('preview') == 'true';
 	var artistId = commons.getFromUrl('artist-id');
-	if (artistId!=null) vm.artist_sel = artistId;
+	if (artistId) vm.artist_sel = artistId;
 	
-	external.getModelForm().then(function(response) {
+	var render = function(newValue, oldValue) {
+		if (newValue) {
+			$scope.vm.formRender();
+			renderWatcher();
+		}
+    };
+    var renderWatcher = $scope.$watch("vm.jsonModel", render);
+	
+	if (!preview) {
+		external.getModelForm().then(function(response) {
+			vm.jsonModel = response.data;
+		});
+	}
+	
+	/* function definitions */
+	vm.formRender = formRender;
+	function formRender() {
 		var hideForm;
 		var forms = [];
-		angular.forEach(response.data, function(form, i) {
+		angular.forEach(vm.jsonModel, function(form, i) {
 			hideForm = false;
 			angular.forEach(form, function(field, idx) {
 				if (idx == 0 && field.type == 'columnheader')
@@ -4717,9 +4786,8 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 		vm.formFields3 = forms[2];
 		vm.formFields4 = forms[3];
 		vm.originalFields = angular.copy( forms );
-	});
+	};
 	
-	/* function definitions */
 	vm.onSubmit = onSubmit;
 	function onSubmit() {
 		var data = {};
@@ -4749,8 +4817,8 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 		var post = {};
 		post['request'] = data;
 		
-//		console.log('default', JSON.stringify(vm.model));
-//		console.log('parsed', JSON.stringify(post));
+		// console.log('default', JSON.stringify(vm.model));
+		// console.log('parsed', JSON.stringify(post));
 		alert(JSON.stringify(post), null, 2);
 	};
 	
@@ -4780,7 +4848,7 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 			var result = $scope.to.data.filter( $scope.to.createFilterFor(query) );
 			if (result.length == 0) return $scope.to.data;
 			return result;
-		}
+		};
 		
 		$scope.to.createFilterFor = function createFilterFor(query) {
 		      var lowercaseQuery = angular.lowercase(query);
@@ -4788,26 +4856,26 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 		    	  if (!artist.title || !artist.title.toLowerCase) return false;
 		    	  return (artist.title.toLowerCase().indexOf(lowercaseQuery) !== -1);
 		      };
-		}
-	}
+		};
+	};
 	functions['offer'] = function($scope, external) {
 		external.getCurrencies($scope.model.agency).then(function(response) {
 			$scope.to.data = response.data.data.currencies;
 			return response;
 		});
-	}
+	};
 	functions['price'] = function($scope, external) {
 		external.getCurrencies($scope.model.agency).then(function(response) {
 			$scope.to.data = response.data.data.currencies;
 			return response;
 		});
-	}
+	};
 	functions['type'] = function($scope, external) {
 		external.getEventTypes($scope.model.agency).then(function(response) {
 			$scope.to.data = response.data.data.eventTypes;
 			return response;
 		});
-	}
+	};
 	functions['venue_country'] = function($scope, external) {
 		external.getCountries().then(function(response) {
 			$scope.to.data = response.data;
@@ -4818,7 +4886,7 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 			if (!query || !$scope.to.data ||
 				!$scope.to.data.length || $scope.to.data.length == 0) return [];
 			return $scope.to.data.filter( $scope.to.createFilterFor(query) );
-		}
+		};
 		
 		$scope.to.createFilterFor = function createFilterFor(query) {
 		      var lowercaseQuery = angular.lowercase(query);
@@ -4826,8 +4894,8 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 		    	  if (!country.name || !country.name.toLowerCase) return false;
 		    	  return (country.name.toLowerCase().indexOf(lowercaseQuery) == 0);
 		      };
-		}
-	}
+		};
+	};
 	functions['organization_country'] = function($scope, external) {
 		external.getCountries().then(function(response) {
 			$scope.to.data = response.data;
@@ -4838,7 +4906,7 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 			if (!query || !$scope.to.data ||
 				!$scope.to.data.length || $scope.to.data.length == 0) return [];
 			return $scope.to.data.filter( $scope.to.createFilterFor(query) );
-		}
+		};
 		
 		$scope.to.createFilterFor = function createFilterFor(query) {
 		      var lowercaseQuery = angular.lowercase(query);
@@ -4846,6 +4914,6 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 		    	  if (!country.name || !country.name.toLowerCase) return false;
 		    	  return (country.name.toLowerCase().indexOf(lowercaseQuery) == 0);
 		      };
-		}
-	}
+		};
+	};
 });

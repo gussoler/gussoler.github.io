@@ -4,7 +4,11 @@
 	if (typeof gigwell.agencyId == 'undefined') return;
 	gigwell.iframeName = gigwell.iframeName || 'gigwell-iframe';
 	gigwell.container = gigwell.container || 'gigwell-container';
+	
+	var url = "http://gussoler.github.io/src/booking.html?v=[TMS]&artist-id=[ARTIST]&agency-id=[AGENCY]&iframeOrigin=[ORIGIN]";
+	var callbackExecuted = false;
 	var bookingbtn = null;
+	var url;
 	
 	if (typeof jQuery != 'function') {
 		var head = document.getElementsByTagName("head")[0];
@@ -44,6 +48,10 @@
 					if (data.name === 'gigwell:resize:iframe') {
 						var iFrame = document.getElementById(gigwell.iframeName);
 						if (iFrame !== null) iFrame.height = data.height;
+						if (!callbackExecuted && typeof gigwell.onBooking == 'function') {
+							callbackExecuted = true;
+							gigwell.onBooking();
+						}
 						
 					} else if (data.name === 'gigwell:close:iframe') {
 						var iFrame = document.getElementById(gigwell.iframeName);
@@ -51,6 +59,13 @@
 							bookingbtn.show();
 							iFrame.remove();
 						}
+						
+					} else if (data.name === 'gigwell:preview:sendData' && gigwell.preview) {
+						var data = {
+							name : 'gigwell:preview:data',
+							json : gigwell.preview
+						};
+						document.getElementById(gigwell.iframeName).contentWindow.postMessage(JSON.stringify(data), getOrigin(url));
 					}
 				}
 			} catch (e) {
@@ -60,11 +75,12 @@
 	});
 	
 	var gwInit = function (gw$) {
-		var url = "//gussoler.github.io/src/booking.html?v=[TMS]&artist-id=[ARTIST]&agency-id=[AGENCY]&iframeOrigin=[ORIGIN]"
-			.replace('[TMS]', new Date().getTime())
-			.replace('[ARTIST]', gigwell.artistId? gigwell.artistId:'')
-			.replace('[AGENCY]', gigwell.agencyId)
-			.replace('[ORIGIN]', getIFrameSrc());
+		url = url.replace('[TMS]', new Date().getTime())
+				 .replace('[ARTIST]', gigwell.artistId? gigwell.artistId:'')
+				 .replace('[AGENCY]', gigwell.agencyId)
+				 .replace('[ORIGIN]', escape(getOrigin(location.href))); /* global escape */
+		
+		if (typeof gigwell.preview == 'object') url += '&preview=true';
 		
 		var container = gw$(document.getElementsByClassName(gigwell.container));
 		bookingbtn = gw$('<a href="'+url+'" class="booking">Booking Form</a>');
@@ -73,11 +89,12 @@
 		gw$(bookingbtn).click(function() {
 			bookingbtn.hide();
 			container.append(createIFrame(url));
+			callbackExecuted = false;
 			return false;
 		});
 	}
 	
-	var createIFrame = function (url) {
+	var createIFrame = function(src) {
         var iFrame = document.createElement('iframe');
         iFrame.id = gigwell.iframeName;
         iFrame.style.cssText = 'width: 100%; overflow:hidden; border:0; padding: 0; margin: 0;';
@@ -86,7 +103,7 @@
         iFrame.scrolling = 'no';
         iFrame.frameborder = '0';
         iFrame.allowTransparency = true;
-        iFrame.src = url;
+        iFrame.src = src;
         
         try {
         	/* html5 specials */
@@ -98,10 +115,9 @@
         return iFrame;
 	};
 	
-	var getIFrameSrc = function() {
-		var origin = location.href;
+	var getOrigin = function(origin) {
 		if (origin.indexOf('?') > -1)
 			origin = origin.split('?')[0];
-		return escape(origin); /* global escape */
+		return origin;
 	};
 })();

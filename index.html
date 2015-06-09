@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>TEST</title>
+	<title>Snippet TEST</title>
 	<style>
 		div.gigwell-container a.booking {
 			cursor: pointer;font-family: latolight,"helvetica neue",helvetica,arial,sans-serif;
@@ -21,10 +21,18 @@
 	(function(e,t,n){var r,a,c="script";e.gigwell=e.gigwell||{},r=t.createElement(c),
 		a=t.getElementsByTagName(c)[0],r.async=1,r.src=n,a.parentNode.insertBefore(r,a)
 	})(window,document,'//gussoler.github.io/src/js/booking-widget.js');
-
-	gigwell.agencyId = 14;  // Required
-	// gigwell.artistId = 10;  // Optional
-	// gigwell.onBooking = function(data  { console.log('loaded ); }
+	
+	// Required
+	gigwell.agencyId = 14;
+	
+	// Optional
+	// gigwell.artistId = 10;
+	
+	// Optional
+	// gigwell.onBooking = function() { console.log('loaded' ); };
+	
+	// Internal use for previewing
+	// gigwell.preview = [[{"type":"columnheader","hide":false,"templateOptions":{"label":"Event Details"}},{"key":"artist","type":"autocomplete","hide":false,"templateOptions":{"label":"Artist Name","required":true,"valueattr":"title"}},{"key":"offer","type":"currency","templateOptions":{"label":"Offer Amount","type":"number","valueProp":"value","labelProp":"displayName"}},{"key":"date","type":"date","templateOptions":{"label":"Date","required":true}},{"key":"name","type":"input","templateOptions":{"type":"text","label":"Event Name"}},{"key":"time","type":"time","templateOptions":{"label":"Set / Stage Time"}},{"key":"lineup","type":"chips","templateOptions":{"label":"Confirmed Line Up","placeholder":"+Confirmed Line Up","secplaceholder":"Confirmed Line Up | + press ENTER"}},{"key":"type","type":"select","templateOptions":{"valueProp":"value","labelProp":"value","placeholder":"Event Type"}},{"key":"logistics_accommodation","type":"switch","templateOptions":{"label":"Includes Accommodation","truevalue":"true","falsevalue":"false"}}],[{"type":"columnheader","templateOptions":{"label":"Promoter Organization"}},{"key":"organization_name","type":"input","templateOptions":{"type":"text","label":"Organization Name"}},{"key":"organization_country","type":"autocomplete","templateOptions":{"label":"Country","valueattr":"name"}}]];
 </script>
 
 </body>
