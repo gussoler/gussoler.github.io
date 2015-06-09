@@ -4595,8 +4595,9 @@ app.factory('external', function($http) {
 		getArtists : getArtists
 	};
 	
-	function getModelForm() {
+	function getModelForm(id) {
 		return $http.get('/src/resources/jsonModel.json');
+		//return $http.get('//green.dev.gig-well.com/api/agency/'+id+'/booknow/presets/booknow');
 	}
 	
 	function getCountries() {
@@ -4725,7 +4726,7 @@ app.directive('receivePreviewModel', function(commons) {
 		}
 	};
 });
-app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
+app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons) {
 	var vm = this;
 	var agencyId = commons.getFromUrl('agency-id');
 	if (!agencyId) return;
@@ -4756,8 +4757,12 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
     var renderWatcher = $scope.$watch("vm.jsonModel", render);
 	
 	if (!preview) {
-		external.getModelForm().then(function(response) {
-			vm.jsonModel = response.data;
+		external.getModelForm(vm.model.agency).then(function(response) {
+			try {
+				vm.jsonModel = response.data.data.booknow;
+			} catch (err) {
+				vm.jsonModel = response.data;
+			}
 		});
 	}
 	
@@ -4772,6 +4777,7 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 				if (idx == 0 && field.type == 'columnheader')
 					hideForm = (field.hide === true);
 				else if (!hideForm) {
+					if (field.templateOptions) field.templateOptions.submitted = false;
 					if (artistId != null && field.key == 'artist')
 						field.hide = true;
 					else if (field.hide !== true && functions[field.key])
@@ -4790,36 +4796,62 @@ app.controller('MainCtrl', function MainCtrl($scope, external, commons) {
 	
 	vm.onSubmit = onSubmit;
 	function onSubmit() {
-		var data = {};
-		angular.forEach(vm.model, function(value, key) {
-			if (value == null || key.split('-').length > 1 && key.split('-')[1] == 'tmp') {
-				// skip
-			} else if (key == 'artist') {
-				data['artistEntityId'] = value.entityId;
-				
-			} else if (key == 'agency') {
-				data['agencyEntityId'] = value;
-				
-			} else if (key.split('_').length > 1) {
-				var aux = key.split('_');
-				if (!data[aux[0]]) data[aux[0]] = {};
-				data[aux[0]][aux[1]] = value;
-				
-			} else {
-				data[key] = value;
+		angular.forEach(vm.jsonModel, function(form, i) {
+			angular.forEach(form, function(field, idx) {
+				if (field.templateOptions) field.templateOptions.submitted = true;
+			});
+		});
+		
+		$timeout(function() {
+			var required = angular.element(document.querySelectorAll("[ng-message]"));
+			if (required.length > 0) {
+				required[0].focus();
+				return;
 			}
-		}, data);
-		
-		if (!data['artistEntityId'] && vm.artist_sel) {
-			data['artistEntityId'] = vm.artist_sel;
-		}
-		
-		var post = {};
-		post['request'] = data;
-		
-		// console.log('default', JSON.stringify(vm.model));
-		// console.log('parsed', JSON.stringify(post));
-		alert(JSON.stringify(post), null, 2);
+			
+			var data = {};
+			angular.forEach(vm.model, function(value, key) {
+				if (value == null || (key.split('-').length > 1 && key.split('-')[1] == 'tmp')) {
+					// skip
+				} else if (key == 'artist') {
+					data['artistEntityId'] = value.entityId;
+					
+				} else if (key == 'agency') {
+					data['agencyEntityId'] = value;
+					
+				} else if (key.split('_').length > 1) {
+					var aux = key.split('_');
+					if (!data[aux[0]]) data[aux[0]] = {};
+					
+					if (aux[1] == 'country') {
+						if (value.code)
+							data[aux[0]][aux[1]] = value.code;
+					} else
+						data[aux[0]][aux[1]] = value;
+					
+				} else {
+					data[key] = value;
+				}
+			}, data);
+			
+			if (!data['artistEntityId'] && vm.artist_sel) {
+				data['artistEntityId'] = vm.artist_sel;
+			}
+			
+			if (data['date']) {
+				var aux = JSON.stringify(data['date']).split('T')[0];
+				if (data['time']) data['time'] = aux + 'T' + data['time'].split('T')[1];
+				if (data['open']) data['open'] = aux + 'T' + data['open'].split('T')[1];
+				if (data['curfew']) data['curfew'] = aux + 'T' + data['curfew'].split('T')[1];
+			}
+			
+			var post = {};
+			post['request'] = data;
+			
+			// console.log('default', JSON.stringify(vm.model));
+			// console.log('parsed', JSON.stringify(post));
+			alert(JSON.stringify(post), null, 2);
+		}, 0);
 	};
 	
 	vm.onCancel = onCancel;
