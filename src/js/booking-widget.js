@@ -6,8 +6,10 @@
 	gigwell.container = gigwell.container || 'gigwell-container';
 	gigwell.baseUrl = gigwell.baseUrl || 'http://localhost:8080/';
 	gigwell.apiUrl = gigwell.apiUrl || 'http://green.dev.gig-well.com/';
-
-	var url = gigwell.baseUrl + "src/booking.html?v=[TMS]&artist-id=[ARTIST]&agency-id=[AGENCY]&iframeOrigin=[ORIGIN]&apiUrl=[API]";
+	gigwell.formDisplayMode = gigwell.formDisplayMode || 'inline';
+	
+	var url = gigwell.baseUrl + "src/booking.html?v=[TMS]&artist-id=[ARTIST]&" +
+			  "agency-id=[AGENCY]&iframeOrigin=[ORIGIN]&apiUrl=[API]&display=[DISPLAY]";
 	var callbackExecuted = false;
 	var bookingbtn = null;
 	
@@ -50,8 +52,9 @@
 				 .replace('[ARTIST]', gigwell.artistId? gigwell.artistId:'')
 				 .replace('[AGENCY]', gigwell.agencyId)
 				 .replace('[ORIGIN]', escape(getOrigin(location.href)))
-				 .replace('[API]', escape(gigwell.apiUrl));
-
+				 .replace('[API]', escape(gigwell.apiUrl))
+				 .replace('[DISPLAY]', gigwell.formDisplayMode);
+		
 		if (typeof gigwell.preview == 'object') url += '&preview=true';
 		
 		var container = document.getElementById(gigwell.container);
@@ -75,15 +78,22 @@
 	};
 	
 	var createIFrame = function(src) {
+
         var iFrame = document.createElement('iframe');
         iFrame.id = gigwell.iframeName;
-        iFrame.style.cssText = 'width: 100%; overflow:hidden; border:0; padding: 0; margin: 0;';
         iFrame.width = '100%';
         iFrame.height= '100%';
-        iFrame.scrolling = 'no';
         iFrame.frameborder = '0';
         iFrame.allowTransparency = true;
         iFrame.src = src;
+
+		if(gigwell.formDisplayMode !== 'modal'){
+			iFrame.scrolling = 'no';
+			iFrame.style.cssText = 'width: 100%; overflow:hidden; border:0; padding: 0; margin: 0;';
+		} else {
+			iFrame.scrolling = 'yes';
+			iFrame.style.cssText = 'position:fixed; width: 100%; height: 100%; overflow:scroll; border:0; padding: 0; margin: 0; left: 0; top: 0;';
+		}
         
         try {
         	/* html5 specials */

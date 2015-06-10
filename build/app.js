@@ -4599,7 +4599,8 @@ app.factory('external', function ($http, commons) {
         getCountries: getCountries,
         getEventTypes: getEventTypes,
         getArtists: getArtists,
-        getStyleSheets: getStyleSheets
+        getStyleSheets: getStyleSheets,
+        postFormData: postFormData
     };
 
     function getModelForm(id) {
@@ -4636,6 +4637,10 @@ app.factory('external', function ($http, commons) {
             return data.data.data;
         });
     }
+
+    function postFormData(json) {
+		return $http.post(apiUrl + 'api/booknow', json);
+	}
 });
 
 /** This should be in a file called 'commons.service.js' if that's the object it produces. */
@@ -4680,6 +4685,7 @@ app.directive('notifyIframeParentResize', function(commons) {
 		link : function($scope, $element, $attrs) {
 			var origin = commons.getFromUrl('iframeOrigin', true);
 			if (!origin) return;
+			var display = $scope.vm.modal;
 			
 			window.addEventListener('resize', notifyResize);
 			
@@ -4698,7 +4704,7 @@ app.directive('notifyIframeParentResize', function(commons) {
 			function notifyResize() {
 				var data = {
 					name : 'gigwell:resize:iframe',
-					height : $element[0].scrollHeight,
+					height : $element[0].scrollHeight+(display?20:0),
 					width : $element[0].scrollWidth
 				};
 				parent.postMessage(JSON.stringify(data), origin);
@@ -4753,9 +4759,11 @@ app.directive('receivePreviewModel', function(commons) {
 		}
 	};
 });
-app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons) {
+app.controller('MainCtrl', function MainCtrl($scope, $timeout, $location, external, commons) {
 	var vm = this;
 	vm.stylesheets = [];
+	vm.modal = commons.getFromUrl('display') == 'modal';
+	
 	var agencyId = commons.getFromUrl('agency-id');
 	if (!agencyId) return;
 	
@@ -4841,7 +4849,14 @@ app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons
 		$timeout(function() {
 			var required = angular.element(document.querySelectorAll("[ng-message]"));
 			if (required.length > 0) {
-				vm.error = angular.element(required[0]).text();
+				var moveTo = null;
+				angular.forEach(angular.element(required[0]).parent().parent().children(), function(ele, i) {
+					if (!moveTo && angular.element(ele).attr('id')) {
+						moveTo = angular.element(ele).attr('id');
+						angular.element(ele).focus();
+					}
+				});
+				if (moveTo) $location.hash( moveTo );
 				return;
 			}
 			
@@ -4898,11 +4913,21 @@ app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons
 			
 			var post = {};
 			post['request'] = data;
-			
-			// console.log('default', JSON.stringify(vm.model));
-			// console.log('parsed', JSON.stringify(post));
-			alert(JSON.stringify(post), null, 2);
+			vm.postingdata = true;
+			external.postFormData(post)
+				.success(function(data, status, headers, config) {
+					postFormData(data, status, headers, config);
+				}).error(function(data, status, headers, config) {
+					postFormData(data, status, headers, config);
+				});
 		}, 300);
+	};
+	
+	function postFormData(data, status, headers, config) {
+		vm.postingdata = false;
+		if (!data || data.status != 'OK') {
+			$scope.vm.error = "Your form can't be processed, please try again later";
+		}
 	};
 	
 	vm.onCancel = onCancel;

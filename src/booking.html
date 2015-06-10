@@ -11,55 +11,67 @@
 
 <receive-preview-model/>
 
-<form novalidate name="form" ng-submit="vm.onSubmit()">
-
-    <section class="booking-form container"
-             notify-iframe-parent-resize=""
-             artist-entity-id="{{vm.artist_sel}}" agency-entity-id="{{vm.model.agency}}">
-        <header class="booking-form-header">
-            <button ng-click="vm.onCancel()"
-                    class="pull-right"
-                    title="Cancel request">x
-            </button>
-            <h4 class="md-headline">Request Booking</h4>
-        </header>
-        <div class="booking-form-content row">
-            <div class="col-xs-12 col-sm-6">
-                <formly-form model="vm.model" fields="vm.formFields1">
-                </formly-form>
+<div ng-class="{'overlay': vm.modal}" class="container"
+     notify-iframe-parent-resize="">
+    <form novalidate name="form" ng-submit="vm.onSubmit()">
+        <section class="booking-form" artist-entity-id="{{vm.artist_sel}}" agency-entity-id="{{vm.model.agency}}"
+                ng-cloak="">
+            <header class="booking-form-header">
+                <button ng-click="vm.onCancel()"
+                        ng-if="vm.modal"
+                        class="close-overlay-btn"
+                        title="Cancel request"><i class="glyphicon glyphicon-close"></i>
+                </button>
+                <h4 class="md-headline">Request Booking</h4>
+            </header>
+            <div class="booking-form-content row">
+                <div class="col-xs-12 col-sm-6">
+                    <formly-form model="vm.model" fields="vm.formFields1">
+                    </formly-form>
+                </div>
+                <div class="col-xs-12 col-sm-6" ng-show="vm.formFields2">
+                    <formly-form model="vm.model" fields="vm.formFields2">
+                    </formly-form>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-xs-12 col-sm-6" ng-show="vm.formFields3">
+                    <formly-form model="vm.model" fields="vm.formFields3">
+                    </formly-form>
+                </div>
+                <div class="col-xs-12 col-sm-6" ng-show="vm.formFields4">
+                    <formly-form model="vm.model" fields="vm.formFields4">
+                    </formly-form>
+                </div>
+                <div class="clearfix" ng-show="vm.formFields3 || vm.formFields4"></div>
             </div>
-            <div class="col-xs-12 col-sm-6" ng-show="vm.formFields2">
-                <formly-form model="vm.model" fields="vm.formFields2">
-                </formly-form>
+            <!--
+            <br/>
+            <div>
+              <pre>Form Data: {{vm.model | json}}</pre>
             </div>
-            <div class="clearfix"></div>
-            <div class="col-xs-12 col-sm-6" ng-show="vm.formFields3">
-                <formly-form model="vm.model" fields="vm.formFields3">
-                </formly-form>
-            </div>
-            <div class="col-xs-12 col-sm-6" ng-show="vm.formFields4">
-                <formly-form model="vm.model" fields="vm.formFields4">
-                </formly-form>
-            </div>
-            <div class="clearfix" ng-show="vm.formFields3 || vm.formFields4"></div>
-        </div>
-        <!--
-        <br/>
-        <div>
-          <pre>Form Data: {{vm.model | json}}</pre>
-        </div>
-        -->
-        <footer class="booking-form-footer">
-			<md-button class="md-raised">Request booking
-            </md-button>
-            <md-button ng-click="vm.onCancel()">Cancel</md-button>
-
-			<div ng-if="form.$submitted" class="form-invalid">
-				{{vm.error}}
-			</div>
-		</footer>
-    </section>
-</form>
+            -->
+            <footer class="booking-form-footer">
+                <p class="form-invalid" ng-if="vm.error">{{vm.error}}</p>
+                <md-button class="md-raised booking-form-submit">
+                    <div class="sk-spinner sk-spinner-wave"
+                         ng-if="vm.postingdata">
+                        <div class="sk-rect1"></div>
+                        <div class="sk-rect2"></div>
+                        <div class="sk-rect3"></div>
+                        <div class="sk-rect4"></div>
+                        <div class="sk-rect5"></div>
+                    </div>
+                    <span>Request booking</span>
+                </md-button>
+                <md-button ng-click="vm.onCancel()"
+                           ng-if="vm.modal"
+                           class="booking-form-cancel">Cancel</md-button>
+                <a href="http://www.gigwell.io" class="gigwell-branding"><img src="/src/resources/gigwell-logo.png" class="gigwell-logo"/></a>
+            </footer>
+        </section>
+    </form>
+</div>
+<div ng-class="{'overlay-backdrop': vm.modal}"></div>
 
 <!-- Put custom templates here -->
 <script type="text/ng-template" id="columnheader.html">
@@ -70,11 +82,11 @@
 <script type="text/ng-template" id="areatext.html">
     <md-input-container>
         <label>{{to.label}}</label>
-        <textarea required ng-model="model[options.key]" name="{{::id}}" ng-required="to.required"
-                  ng-focus="focused = true"></textarea>
+        <textarea required ng-model="model[options.key]"
+                  ng-model-options="{debounce: {default: 300, blur: 0}}" name="{{::id}}" ng-required="to.required"></textarea>
 
-		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
-			<div ng-message="required">* {{to.label}} required.</div>
+        <div ng-messages="form.{{::id}}.$error" ng-if="form[id].$touched || to.submitted" role="alert">
+            <div ng-message="required">This is required.</div>
         </div>
     </md-input-container>
 </script>
@@ -93,8 +105,8 @@
         <md-item-template>
             <span md-highlight-text="model[options.key+'-tmp']" md-highlight-flags="^i">{{item[to.valueattr]}}</span>
         </md-item-template>
-		<div ng-messages="form.{{::id}}.$error" ng-if="to.required && (model[options.key+'-tmp'] == '' || to.submitted)" role="alert">
-			<div ng-message="required">* {{to.label}} required.</div>
+        <div ng-messages="form.{{::id}}.$error" ng-if="to.required && (form[id].$touched || to.submitted)" role="alert">
+            <div ng-message="required">This is required.</div>
         </div>
     </md-autocomplete>
     <!-- http://www.yearofmoo.com/2014/05/how-to-use-ngmessages-in-angularjs.html -->
@@ -110,6 +122,7 @@
                   delete-button-label="Remove Tag"
                   delete-hint="Press delete to remove tag"
                   secondary-placeholder="{{to.secplaceholder}}"></md-chips>
+        <p class="help-block">Press enter to add multiple.</p>
     </div>
 </script>
 <!-- END chips -->
@@ -122,11 +135,11 @@
     <md-input-container>
         <label>{{to.label}}</label>
         <input required type="{{to.type}}" ng-model="model[options.key].price" name="{{::id}}"
-               ng-required="to.required" ng-focus="focused = true">
+               ng-required="to.required">
 
-		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
-			<div ng-message="required">* {{to.label}} required.</div>
-			<div ng-message="number">* {{to.label}} is invalid.</div>
+        <div ng-messages="form.{{::id}}.$error" ng-if="form[id].$touched || to.submitted" role="alert">
+            <div ng-message="required">This is required.</div>
+            <div ng-message="number">Not a valid number.</div>
         </div>
     </md-input-container>
 </script>
@@ -136,10 +149,10 @@
     <md-input-container>
         <label>{{to.label}}</label>
         <input required type="text" class="form-control picker-fix" ng-required="to.required"
-               ng-model="model[options.key]" name="{{::id}}" ng-focus="focused = true" bs-datepicker>
+               ng-model="model[options.key]" name="{{::id}}" bs-datepicker>
 
-		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
-			<div ng-message="required">* {{to.label}} required.</div>
+        <div ng-messages="form.{{::id}}.$error" ng-if="form[id].$touched || to.submitted" role="alert">
+            <div ng-message="required">This is required.</div>
         </div>
     </md-input-container>
 </script>
@@ -148,14 +161,14 @@
 <script type="text/ng-template" id="input.html">
     <md-input-container>
         <label>{{to.label}}</label>
-        <input required ng-model="model[options.key]" name="{{::id}}" ng-required="to.required"
-               ng-focus="focused = true">
+        <input required ng-model="model[options.key]"
+               ng-model-options="{debounce: {default: 300, blur: 0}}" name="{{::id}}" ng-required="to.required">
 
-		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
-			<div ng-message="required">* {{to.label}} required.</div>
-			<div ng-message="email">* {{to.label}} is invalid.</div>
-			<div ng-message="url">* {{to.label}} is invalid (please check it starts with http://).</div>
-			<div ng-message="number">* {{to.label}} is invalid.</div>
+        <div ng-messages="form.{{::id}}.$error" ng-if="form[id].$touched || to.submitted" role="alert">
+            <div ng-message="required">This is required.</div>
+            <div ng-message="email">Not a valid email.</div>
+            <div ng-message="url">Not a valid url. (Please check it starts with http://)</div>
+            <div ng-message="number">Not a valid number.</div>
         </div>
     </md-input-container>
 </script>
@@ -163,12 +176,11 @@
 
 <script type="text/ng-template" id="select.html">
     <md-input-container>
-        <md-select required placeholder="{{to.placeholder}}" ng-model="model[options.key]" ng-required="to.required"
-                   ng-focus="focused = true">
+        <md-select required placeholder="{{to.placeholder}}" ng-model="model[options.key]" ng-required="to.required">
             <md-option ng-repeat="d in to.data" value="{{d[to.valueProp]}}">{{d[to.labelProp]}}</md-option>
         </md-select>
-		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
-			<div ng-message="required">* {{to.placeholder}} required.</div>
+        <div ng-messages="form.{{::id}}.$error" ng-if="form[id].$touched || to.submitted" role="alert">
+            <div ng-message="required">This is required.</div>
         </div>
     </md-input-container>
 </script>
@@ -186,10 +198,10 @@
     <md-input-container>
         <label>{{to.label}}</label>
         <input required type="text" class="form-control picker-fix" ng-required="to.required"
-               ng-model="model[options.key]" name="{{::id}}" ng-focus="focused = true" bs-timepicker>
+               ng-model="model[options.key]" name="{{::id}}" bs-timepicker>
 
-		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
-			<div ng-message="required">* {{to.label}} required.</div>
+        <div ng-messages="form.{{::id}}.$error" ng-if="form[id].$touched || to.submitted" role="alert">
+            <div ng-message="required">This is required.</div>
         </div>
     </md-input-container>
 </script>

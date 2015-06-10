@@ -1,3 +1,61 @@
+@font-face {
+    font-family: 'Glyphicons';
+    src: url('/src/fonts/Glyphicons.eot?y7xi20');
+    src: url('/src/fonts/Glyphicons.eot?#iefixy7xi20') format('embedded-opentype'),
+    url('/src/fonts/Glyphicons.ttf?y7xi20') format('truetype'),
+    url('/src/fonts/Glyphicons.woff?y7xi20') format('woff'),
+    url('/src/fonts/Glyphicons.svg?y7xi20#Glyphicons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.glyphicon,
+[class^="glyphicon-"],
+[class*=" glyphicon-"] {
+    font-family: 'Glyphicons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/**** Bootstrap specific ******/
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+}
+
+.glyphicon-ok:before {
+    content: "\e206";
+}
+
+.glyphicon-chevron-left:before {
+    content: "\e207";
+}
+
+.glyphicon-chevron-right:before {
+    content: "\e208";
+}
+
+.glyphicon-close:before {
+    content: "\e209";
+}
+
+.glyphicon-chevron-up:before {
+    content: "\e20a";
+}
+
+.glyphicon-chevron-down:before {
+    content: "\e20b";
+}
 /*!
  * Angular Material Design
  * https://github.com/angular/material
@@ -7143,45 +7201,6 @@ fieldset[disabled] .btn-info-strap.active {
     margin-top: 5px;
 }
 
-@font-face {
-    font-family: 'Glyphicons Halflings';
-    src: url('/src/fonts/glyphicons-halflings-regular.eot');
-    src: url('/src/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/src/fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('/src/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/src/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/src/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
-}
-
-.glyphicon {
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: normal;
-    line-height: 1;
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.glyphicon-chevron-left:before {
-    content: "\e079";
-}
-
-.glyphicon-chevron-right:before {
-    content: "\e080";
-}
-
-.glyphicon-ok:before {
-    content: "\e013";
-}
-
-.glyphicon-chevron-up:before {
-    content: "\e113";
-}
-
-.glyphicon-chevron-down:before {
-    content: "\e114";
-}
-
 .carousel-control .icon-prev,
 .carousel-control .icon-next,
 .carousel-control .glyphicon-chevron-left,
@@ -7230,22 +7249,44 @@ fieldset[disabled] .btn-info-strap.active {
         bottom: 20px;
     }
 }
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
 
-body {
-  background-color: white;
+html, body {
+    background-color: transparent;
 }
 
 md-chips {
-  width: 100%;
-  padding-top: 2px;
+    width: 100%;
+    padding-top: 2px;
+}
+
+md-chips + .help-block {
+    margin: 0;
+    display: block;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    font-size: 12px;
+    line-height: 24px;
+    left: 5px;
+    bottom: 3px;
+    color: #BDBDBD;
 }
 
 .md-chips-row {
-  padding-bottom: 29px;
+    padding-bottom: 29px;
+    position: relative;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+md-chips .md-chips {
+    box-shadow: 0 1px rgba(0,0,0,0.12);
 }
 
 md-input-container:not(.md-input-focused):not(.md-input-has-value) label {
-  top: -5px;
+    top: -5px;
 }
 
 .md-select-menu-container {
@@ -7253,92 +7294,235 @@ md-input-container:not(.md-input-focused):not(.md-input-has-value) label {
 }
 
 .form-invalid {
-  color: rgb(244,67,54);
-  -webkit-font-smoothing: antialiased;
-  font-size: 12px;
-  display: inline-block;
+    color: rgb(244, 67, 54);
+    -webkit-font-smoothing: antialiased;
+    font-size: 12px;
+    display: inline-block;
 }
+
+.sk-spinner-wave.sk-spinner {
+	margin: 0 auto;
+	width: 50px;
+	height: 30px;
+	text-align: center;
+	font-size: 10px;
+	display: inline-block;
+}
+
+.sk-spinner-wave div {
+	background-color: #333;
+	height: 100%;
+	width: 6px;
+	display: inline-block;
+	-webkit-animation: sk-waveStretchDelay 1.2s infinite ease-in-out;
+	animation: sk-waveStretchDelay 1.2s infinite ease-in-out;
+}
+
+.sk-spinner-wave .sk-rect2 {
+	-webkit-animation-delay: -1.1s;
+	animation-delay: -1.1s;
+}
+
+.sk-spinner-wave .sk-rect3 {
+	-webkit-animation-delay: -1s;
+	animation-delay: -1s;
+}
+
+.sk-spinner-wave .sk-rect4 {
+	-webkit-animation-delay: -0.9s;
+	animation-delay: -0.9s;
+}
+
+.sk-spinner-wave .sk-rect5 {
+	-webkit-animation-delay: -0.8s;
+	animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-waveStretchDelay {
+  0%, 40%, 100% {
+    -webkit-transform: scaleY(0.4);
+            transform: scaleY(0.4); }
+  20% {
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1); } }
+@keyframes sk-waveStretchDelay {
+  0%, 40%, 100% {
+    -webkit-transform: scaleY(0.4);
+            transform: scaleY(0.4); }
+  20% {
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1); } }
 
 .datepicker,
 .timepicker {
-  position: absolute;
-  z-index: 1000;
-  top: 100%;
-  left: 0 !important;
-  display: none;
-  float: left;
-  width: 100%;
-  max-width: 350px !important;
-  margin: 2px 0 0;
-  border: none;
-  background: white;
-  -webkit-background-clip: padding-box;
-          background-clip: padding-box;
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    position: absolute;
+    z-index: 1000;
+    top: 100%;
+    left: 0 !important;
+    display: none;
+    float: left;
+    width: 100%;
+    max-width: 350px !important;
+    margin: 2px 0 0;
+    border: none;
+    background: white;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
 }
 
 .datepicker {
-  padding-bottom: 15px;
+    padding-bottom: 15px;
 }
 
 .timepicker table {
-  margin: 0 10px;
+    margin: 0 10px;
 }
 
 .timepicker thead button,
 .timepicker tfoot button {
-  padding-top: 15px;
-  padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 22px;
 }
 
 .datepicker table thead button {
-  padding-top: 15px;
-  padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
+.datepicker table thead button i {
+    font-size: 22px;
 }
 
 .timepicker button {
-  padding: 10px 15px;
+    padding: 10px 15px;
 }
 
 .datepicker button,
 .timepicker button {
-  border: 0;
-  border-radius: 0;
-  outline: none;
+    border: 0;
+    border-radius: 0;
+    outline: none;
 }
 
 .datepicker tbody button {
-  padding: 10px;
+    padding: 10px;
 }
 
 .datepicker.datepicker-mode-1 tbody button,
 .datepicker.datepicker-mode-2 tbody button {
-  height: 65px;
+    height: 65px;
 }
 
-
-/********* CUSTOM ****/
-
 .currency-type {
-  float: left;
-  margin-top: 7px;
+    float: left;
+    margin-top: 7px;
 }
 
 .booking-form-header {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .booking-form-footer {
-  margin-top: 20px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    position: relative;
 }
 
-/************************** Colors ********************/
+.booking-form-footer .gigwell-branding{
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+    right: 15px;
+}
 
+.gigwell-logo {
+    width: 101px;
+    height: 25px;
+}
+
+.booking-form-footer button:first-child {
+    margin-left: 0;
+}
+
+/********* Overlay ****/
+
+.overlay {
+    position: relative;
+    top: 5px;
+    background-color: #ffffff;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    z-index: 95;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.overlay-backdrop {
+    position: fixed;
+    left: 0%;
+    top: 0%;
+    background-color: black;
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+    width: 100%;
+    height: 100%;
+    z-index: 90;
+}
+
+.overlay .booking-form-header {
+    color: rgb(255, 255, 255);
+    position: relative;
+    margin: 0;
+    padding: 20px;
+}
+
+.overlay .booking-form-header .md-headline {
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.close-overlay-btn {
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    color: white;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+    padding-right: 20px;
+    padding-left: 20px;
+    font-size: 22px;
+}
+
+.overlay .booking-form-content {
+    padding: 20px;
+}
+
+.overlay .booking-form-footer {
+    padding: 20px;
+    margin: 0;
+}
+
+.overlay .booking-form-footer .gigwell-branding {
+    right: 20px
+}
+
+/************************** Custom Styling ********************/
+
+button, select, html, textarea, input {
+/ / Set font-family here
+}
 
 .btn-info-strap,
-.btn-primary-strap{
-  border-color: rgb(0,0,0);
-  background-color: rgb(0,0,0);
+.btn-primary-strap {
+    border-color: rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0);
 }
 
 .btn-info-strap:hover,
@@ -7352,26 +7536,43 @@ md-input-container:not(.md-input-focused):not(.md-input-has-value) label {
 .btn-info-strap.active,
 .btn-primary-strap.active,
 .open > .dropdown-toggle.btn-info-strap,
-.open > .dropdown-toggle.btn-primary-strap{
-  border-color: rgb(80,80,80);
-  background-color: rgb(80,80,80);
+.open > .dropdown-toggle.btn-primary-strap {
+    border-color: rgb(80, 80, 80);
+    background-color: rgb(80, 80, 80);
 }
 
 md-switch.md-default-theme.md-checked .md-bar {
-  background-color: rgb(200, 200, 200);
+    background-color: rgb(200, 200, 200);
 }
 
 md-switch.md-default-theme.md-checked .md-thumb {
-  background-color: rgb(80, 80, 80);
+    background-color: rgb(80, 80, 80);
 }
 
 a.md-button.md-default-theme.md-raised,
 .md-button.md-default-theme.md-raised {
-  color: rgba(255, 255, 255, .87);
-  background-color: rgb(0, 0, 0);
+    color: rgba(255, 255, 255, .87);
+    background-color: rgb(0, 0, 0);
 }
 
 a.md-button.md-default-theme.md-raised:not([disabled]):hover,
 .md-button.md-default-theme.md-raised:not([disabled]):hover {
-  background-color: rgb(80, 80, 80);
+    background-color: rgb(80, 80, 80);
 }
+
+md-input-container.md-default-theme:not(.md-input-invalid).md-input-focused .md-input {
+    border-color: rgb(0, 0, 0);
+}
+
+md-chips.md-default-theme .md-chips.md-focused {
+    box-shadow: 0 2px rgb(0, 0, 0);
+}
+
+md-input-container.md-default-theme:not(.md-input-invalid).md-input-focused label {
+    color: rgb(0, 0, 0);
+}
+
+.overlay .booking-form-header {
+    background-color: rgb(0, 0, 0);
+}
+
