@@ -4512,13 +4512,14 @@ return /******/ (function(modules) { // webpackBootstrap
     $templateCache.put('typeahead/typeahead.tpl.html', '<ul tabindex="-1" class="typeahead dropdown-menu" ng-show="$isVisible()" role="select"><li role="presentation" ng-repeat="match in $matches" ng-class="{active: $index == $activeIndex}"><a role="menuitem" tabindex="-1" ng-click="$select($index, $event)" ng-bind="match.label"></a></li></ul>');
   } ]);
 })(window, document);
+// TODO: This should be inside app.js (angular convention)
 var app = angular.module('gigwellForm', [ 'formly', 'formlyMaterial', 'ngMessages', 'mgcrea.ngStrap' ] );
 
 app.config(function($mdThemingProvider) {
     // Configure a dark theme with primary foreground yellow
-    $mdThemingProvider.theme('docs-dark', 'default')
-        .primaryPalette('yellow')
-        .dark();
+    $mdThemingProvider.theme('default')
+        .primaryPalette('grey')
+        .accentPalette('light-blue');
 });
 
 app.config(function($timepickerProvider) {
@@ -4539,7 +4540,7 @@ app.config(function($datepickerProvider) {
     placement: 'bottom-left',
     timezone: 'UTC'
   });
-})
+});
 
 app.run(function(formlyConfig, formlyValidationMessages) {
 	formlyConfig.setType({
@@ -4586,58 +4587,84 @@ app.run(function(formlyConfig, formlyValidationMessages) {
 		templateUrl : 'currency.html'
     });
 });
-app.factory('external', function($http) {
-	return {
-		getModelForm : getModelForm,
-		getCurrencies : getCurrencies,
-		getCountries : getCountries,
-		getEventTypes : getEventTypes,
-		getArtists : getArtists
-	};
-	
-	function getModelForm(id) {
-		return $http.get('/src/resources/jsonModel.json');
-		//return $http.get('//green.dev.gig-well.com/api/agency/'+id+'/booknow/presets/booknow');
-	}
-	
-	function getCountries() {
-		return $http.get('/src/resources/countries.default.json');
-	}
-	
-	function getCurrencies(id) {
-		return $http.get('//green.dev.gig-well.com/api/agency/'+id+'/booknow/presets/currencies');
-	}
-	
-	function getEventTypes(id) {
-		return $http.get('//green.dev.gig-well.com/api/agency/'+id+'/booknow/presets/eventTypes');
-	}
-	
-	function getArtists(id) {
-		return $http.get('//green.dev.gig-well.com/api/agency/'+id+'/roster/artists?filtered=true');
-	}
+
+/** This should be in a file called 'external.service.js' if that's the object it produces. */
+app.factory('external', function ($http, commons) {
+
+    var apiUrl = commons.getFromUrl('apiUrl', true);
+
+    return {
+        getModelForm: getModelForm,
+        getCurrencies: getCurrencies,
+        getCountries: getCountries,
+        getEventTypes: getEventTypes,
+        getArtists: getArtists,
+        getStyleSheets: getStyleSheets
+    };
+
+    function getModelForm(id) {
+        var bookNowJson = apiUrl + 'api/agency/' + id + '/booknow/presets/booknow';
+        /* testing purposes
+        return $http.get('/src/resources/jsonModel.json').then(function(data) {
+            return data.data.data.booknow;
+        });
+        */
+        return $http.get(bookNowJson).then(function(data) {
+            return data.data.data.booknow;
+        });
+    }
+
+    // TODO: Should this come from the CDN or Presets eventually?
+    function getCountries() {
+        return $http.get('/src/resources/countries.default.json');
+    }
+
+    function getCurrencies(id) {
+        return $http.get(apiUrl + 'api/agency/' + id + '/booknow/presets/currencies');
+    }
+
+    function getEventTypes(id) {
+        return $http.get(apiUrl + 'api/agency/' + id + '/booknow/presets/eventTypes');
+    }
+
+    function getArtists(id) {
+        return $http.get(apiUrl + 'api/agency/' + id + '/roster/artists?filtered=true');
+    }
+
+    function getStyleSheets(id) {
+        return $http.get(apiUrl + 'api/entity/' + id + '/resource/branding').then(function(data) {
+            return data.data.data;
+        });
+    }
 });
 
-app.factory('commons', function($http) {
-	return {
-		getFromUrl : getFromUrl
-	};
-	
-	function getFromUrl(search) {
-		try {
-			var query = location.search.substring(1);
-			var vars = query.split("&");
-			for (var i=0;i<vars.length;i++) {
-			    var pair = vars[i].split("=");
-			    if (pair.length == 2 && pair[0] == search) {
-			    	var aux = pair[1].trim();
-			    	return aux == ''? null : aux;
-			    }
-			}
-		} catch (err) {
-			return null;
-		}
-	}
+/** This should be in a file called 'commons.service.js' if that's the object it produces. */
+app.factory('commons', function () {
+    return {
+        getFromUrl: getFromUrl
+    };
+
+    function getFromUrl(search, unescaped) {
+        try {
+            var query = location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair.length == 2 && pair[0] == search) {
+                    var aux = pair[1].trim() || null;
+                    if (aux && unescaped === true) {
+                        /* global unescape */
+                        aux = unescape(aux);
+                    }
+                    return aux;
+                }
+            }
+        } catch (err) {
+            return null;
+        }
+    }
 });
+
 /**
  *
  * @ngdoc directive
@@ -4651,7 +4678,7 @@ app.directive('notifyIframeParentResize', function(commons) {
 	return {
 		restrict : 'A',
 		link : function($scope, $element, $attrs) {
-			var origin = commons.getFromUrl('iframeOrigin');
+			var origin = commons.getFromUrl('iframeOrigin', true);
 			if (!origin) return;
 			
 			window.addEventListener('resize', notifyResize);
@@ -4671,10 +4698,10 @@ app.directive('notifyIframeParentResize', function(commons) {
 			function notifyResize() {
 				var data = {
 					name : 'gigwell:resize:iframe',
-					height : $element[0].scrollHeight+10,
+					height : $element[0].scrollHeight,
 					width : $element[0].scrollWidth
 				};
-				parent.postMessage(JSON.stringify(data), unescape(origin));
+				parent.postMessage(JSON.stringify(data), origin);
 			}
 		}
 	};
@@ -4693,7 +4720,7 @@ app.directive('receivePreviewModel', function(commons) {
 		restrict : 'E',
 		link : function($scope, $element, $attrs) {
 			var preview = commons.getFromUrl('preview');
-			var origin = commons.getFromUrl('iframeOrigin');
+			var origin = commons.getFromUrl('iframeOrigin', true);
 			if (!origin || preview != 'true') return;
 			
 			window.addEventListener('message', getPreviewData);
@@ -4701,7 +4728,7 @@ app.directive('receivePreviewModel', function(commons) {
 			var data = {
 				name : 'gigwell:preview:sendData'
 			};
-			parent.postMessage(JSON.stringify(data), unescape(origin));
+			parent.postMessage(JSON.stringify(data), origin);
 			
 			$scope.$on('$destroy', function() {
 				window.removeEventListener('message', getPreviewData);
@@ -4728,6 +4755,7 @@ app.directive('receivePreviewModel', function(commons) {
 });
 app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons) {
 	var vm = this;
+	vm.stylesheets = [];
 	var agencyId = commons.getFromUrl('agency-id');
 	if (!agencyId) return;
 	
@@ -4742,11 +4770,17 @@ app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons
 		}/*,
 		time : new Date(1970, 0, 1, 10, 30, 40),
 		date : new Date() */
-	}
+	};
 	
 	var preview = commons.getFromUrl('preview') == 'true';
 	var artistId = commons.getFromUrl('artist-id');
 	if (artistId) vm.artist_sel = artistId;
+	else {
+	    $scope.$watch("vm.model.artist", function(newValue, oldValue) {
+	    	if (newValue && newValue.entityId)
+	    		vm.artist_sel = newValue.entityId;
+	    });
+	}
 	
 	var render = function(newValue, oldValue) {
 		if (newValue) {
@@ -4755,14 +4789,14 @@ app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons
 		}
     };
     var renderWatcher = $scope.$watch("vm.jsonModel", render);
-	
+    
 	if (!preview) {
-		external.getModelForm(vm.model.agency).then(function(response) {
-			try {
-				vm.jsonModel = response.data.data.booknow;
-			} catch (err) {
-				vm.jsonModel = response.data;
-			}
+		external.getStyleSheets(agencyId).then(function(stylesheets) {
+			vm.stylesheets = stylesheets;
+		});
+		
+		external.getModelForm(agencyId).then(function(data) {
+			vm.jsonModel = data;
 		});
 	}
 	
@@ -4778,7 +4812,7 @@ app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons
 					hideForm = (field.hide === true);
 				else if (!hideForm) {
 					if (field.templateOptions) field.templateOptions.submitted = false;
-					if (artistId != null && field.key == 'artist')
+					if (artistId && field.key == 'artist')
 						field.hide = true;
 					else if (field.hide !== true && functions[field.key])
 						field.controller = functions[field.key];
@@ -4796,8 +4830,10 @@ app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons
 	
 	vm.onSubmit = onSubmit;
 	function onSubmit() {
+		vm.error = "";
 		angular.forEach(vm.jsonModel, function(form, i) {
 			angular.forEach(form, function(field, idx) {
+				// propagate $scope.submitted to formly's field
 				if (field.templateOptions) field.templateOptions.submitted = true;
 			});
 		});
@@ -4805,9 +4841,24 @@ app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons
 		$timeout(function() {
 			var required = angular.element(document.querySelectorAll("[ng-message]"));
 			if (required.length > 0) {
-				required[0].focus();
+				vm.error = angular.element(required[0]).text();
 				return;
 			}
+			
+			// check dirty values
+			var successfull = true;
+			angular.forEach(vm.jsonModel, function(form, i) {
+				angular.forEach(form, function(field, idx) {
+					if (successfull && field.templateOptions.required && field.hide !== true && !vm.model[field.key]) {
+						if (field.type == "autocomplete" || field.type == "time" || field.type == "date" || field.type == "select")
+							vm.error = '* Please select a valid value for '+(field.templateOptions.label? field.templateOptions.label : field.templateOptions.placeholder);
+						else
+							vm.error = '* Please enter a valid value for '+(field.templateOptions.label? field.templateOptions.label : field.templateOptions.placeholder);
+						successfull = false;
+					}
+				});
+			});
+			if (!successfull) return;
 			
 			var data = {};
 			angular.forEach(vm.model, function(value, key) {
@@ -4851,17 +4902,17 @@ app.controller('MainCtrl', function MainCtrl($scope, $timeout, external, commons
 			// console.log('default', JSON.stringify(vm.model));
 			// console.log('parsed', JSON.stringify(post));
 			alert(JSON.stringify(post), null, 2);
-		}, 0);
+		}, 300);
 	};
 	
 	vm.onCancel = onCancel;
 	function onCancel() {
-		var origin = commons.getFromUrl('iframeOrigin');
+		var origin = commons.getFromUrl('iframeOrigin', true);
 		if (!origin) return;
 		var data = {
 			name : 'gigwell:close:iframe'
 		};
-		parent.postMessage(JSON.stringify(data), unescape(origin));
+		parent.postMessage(JSON.stringify(data), origin);
 	};
 	
 	var functions = {};

@@ -2,192 +2,208 @@
 <html ng-app="gigwellForm">
 <head lang="en">
     <link href="/build/app.css" rel="stylesheet">
-    <title>Booking form</title>
+    <title>Booking Form</title>
 </head>
 
 <body ng-controller="MainCtrl as vm">
-	<receive-preview-model/>
-	<div ui-view="page" class="page" notify-iframe-parent-resize="">
-	<section class="content" ui-view="content">
-		<section class="profile partner-branded">
-			<div class="text-center marg-top-gutter-half">
-			  <div artist-entity-id="{{vm.artist_sel}}" agency-entity-id="{{vm.model.agency}}">
-			  <div>
-			    <div class="book-now book-now-public rounded-corners drop-shadow marg-botom-gutter text-left">
-			    <div class="book-now-header">
-			    	<button ng-click="vm.onCancel()" class="btn btn-icon pull-right btn-adjust-right btn-adjust-top text-lowercase" title="Cancel request">x</button>
-			        <h4 class="alpha-v ng-binding">Request Booking</h4>
-			        <div class="row">
-			        	<form novalidate name="form">
-				        	<div class="col-xs-12 col-sm-6 col-md-6">
-					        	<formly-form model="vm.model" fields="vm.formFields1">
-						        </formly-form>
-				        	</div>
-				        	<div class="col-xs-12 col-sm-6 col-md-6" ng-show="vm.formFields2">
-					        	<formly-form model="vm.model" fields="vm.formFields2">
-						        </formly-form>
-				        	</div>
-				        	<div class="clearfix"></div>
-				        	<div class="col-xs-12 col-sm-6 col-md-6" ng-show="vm.formFields3">
-					        	<formly-form model="vm.model" fields="vm.formFields3">
-						        </formly-form>
-				        	</div>
-				        	<div class="col-xs-12 col-sm-6 col-md-6" ng-show="vm.formFields4">
-					        	<formly-form model="vm.model" fields="vm.formFields4">
-						        </formly-form>
-				        	</div>
-				        	<div class="clearfix" ng-show="vm.formFields3 || vm.formFields4"></div>
-					        <div class="col-xs-12 col-sm-12 col-md-12">
-					        	<div class="btn-list-sm text-center">
-							    	<button type="submit" class="btn btn-dark btn-sm" ng-click="vm.onSubmit()">Request booking</button>
-						    	</div>
-						    </div>
-			        	</form>
-			        </div>
-			    </div>
-			    </div>
-			  </div>
-			  <!--
-			  <br/>
-			  <div>
-			    <pre>Form Data: {{vm.model | json}}</pre>
-			  </div>
-			  -->
-			  </div>
-			</div>
-		</section>
-	</section>
-	</div>
-	
-    <!-- Put custom templates here -->
-    <script type="text/ng-template" id="columnheader.html">
-		<h5 class='columnHeader strong'>{{options.templateOptions.label}}</h5>
-	</script>
-	<!-- END columnheader -->
-	
-    <script type="text/ng-template" id="areatext.html">
-	<md-input-container>
-		<label>{{to.label}}</label>
-		<textarea required ng-model="model[options.key]" name="{{::id}}" ng-required="to.required" ng-focus="focused = true"></textarea>
-		<div ng-messages="form.{{::id}}.$error" ng-if="focused" role="alert">
-      		<div ng-message="required">* Required</div>
-    	</div>
-	</md-input-container>
-	</script>
-	<!-- END areatext -->
-	
-	<script type="text/ng-template" id="autocomplete.html">
-	<md-autocomplete required
-		ng-required="to.required"
-		md-autoselect=true
-		md-input-name="{{::id}}"
-		md-search-text="model[options.key+'-tmp']"
-		md-selected-item="model[options.key]"
-		md-items="item in to.querySearch(model[options.key+'-tmp'])"
-		md-item-text="item[to.valueattr]"
-		md-floating-label="{{to.label}}">
-	<md-item-template>
-		<span md-highlight-text="model[options.key+'-tmp']" md-highlight-flags="^i">{{item[to.valueattr]}}</span>
-	</md-item-template>
-	<div ng-messages="form.{{::id}}.$error" ng-if="to.required && model[options.key+'-tmp'] == ''" role="alert">
-		<div ng-message="required">* Required</div>
-    </div>
-	</md-autocomplete>
-	<!-- http://www.yearofmoo.com/2014/05/how-to-use-ngmessages-in-angularjs.html -->
-	<!-- https://github.com/angular/material/issues/1633 -->
-	<!-- https://github.com/angular/material/issues/2949 -->
-	</script>
-	<!-- END autocomplete -->
-	
-	<script type="text/ng-template" id="chips.html">
-		<md-chips ng-model="model[options.key]"
-			placeholder="{{to.placeholder}}"
-			delete-button-label="Remove Tag"
-			delete-hint="Press delete to remove tag"
-			secondary-placeholder="{{to.secplaceholder}}"></md-chips>
-	</script>
-	<!-- END chips -->
-	
-	<script type="text/ng-template" id="currency.html">
-		<md-select aria-label="{{to.label}}" ng-model="model[options.key].currencyType">
-			<md-option ng-repeat="d in to.data" value="{{d[to.valueProp]}}">{{d[to.labelProp]}}</md-option>
-		</md-select>
 
-		<md-input-container class="currency-container">
-			<label>{{to.label}}</label>
-			<input required type="{{to.type}}" ng-model="model[options.key].price" name="{{::id}}" 
-				ng-required="to.required" ng-focus="focused = true">
-			<div ng-messages="form.{{::id}}.$error" ng-if="focused" role="alert">
-				<div ng-message="required">* Required</div>
+<link rel="stylesheet" ng-repeat="stylesheet in vm.stylesheets" ng-href="{{ stylesheet }}"/>
+
+<receive-preview-model/>
+
+<form novalidate name="form" ng-submit="vm.onSubmit()">
+
+    <section class="booking-form container"
+             notify-iframe-parent-resize=""
+             artist-entity-id="{{vm.artist_sel}}" agency-entity-id="{{vm.model.agency}}">
+        <header class="booking-form-header">
+            <button ng-click="vm.onCancel()"
+                    class="pull-right"
+                    title="Cancel request">x
+            </button>
+            <h4 class="md-headline">Request Booking</h4>
+        </header>
+        <div class="booking-form-content row">
+            <div class="col-xs-12 col-sm-6">
+                <formly-form model="vm.model" fields="vm.formFields1">
+                </formly-form>
+            </div>
+            <div class="col-xs-12 col-sm-6" ng-show="vm.formFields2">
+                <formly-form model="vm.model" fields="vm.formFields2">
+                </formly-form>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-xs-12 col-sm-6" ng-show="vm.formFields3">
+                <formly-form model="vm.model" fields="vm.formFields3">
+                </formly-form>
+            </div>
+            <div class="col-xs-12 col-sm-6" ng-show="vm.formFields4">
+                <formly-form model="vm.model" fields="vm.formFields4">
+                </formly-form>
+            </div>
+            <div class="clearfix" ng-show="vm.formFields3 || vm.formFields4"></div>
+        </div>
+        <!--
+        <br/>
+        <div>
+          <pre>Form Data: {{vm.model | json}}</pre>
+        </div>
+        -->
+        <footer class="booking-form-footer">
+			<md-button class="md-raised">Request booking
+            </md-button>
+            <md-button ng-click="vm.onCancel()">Cancel</md-button>
+
+			<div ng-if="form.$submitted" class="form-invalid">
+				{{vm.error}}
 			</div>
-		</md-input-container>
-	</script>
-	<!-- END currency -->
-	
-	<script type="text/ng-template" id="datepicker.html">
-		<md-input-container>
-			<label>{{to.label}}</label>
-			<input required type="text" class="form-control picker-fix" ng-required="to.required"
-				ng-model="model[options.key]" name="{{::id}}" ng-focus="focused = true" bs-datepicker>
-			<div ng-messages="form.{{::id}}.$error" ng-if="focused" role="alert">
-				<div ng-message="required">* Required</div>
-			</div>
-		</md-input-container>
-	</script>
-	<!-- END datepicker -->
-	
-	<script type="text/ng-template" id="input.html">
-		<md-input-container>
-			<label>{{to.label}}</label>
-			<input required ng-model="model[options.key]" name="{{::id}}" ng-required="to.required" ng-focus="focused = true">
-			<div ng-messages="form.{{::id}}.$error" ng-if="focused" role="alert">
-      			<div ng-message="required">* Required</div>
-    		</div>
-		</md-input-container>
-	</script>
-	<!-- END input -->
-	
-	<script type="text/ng-template" id="select.html">
-		<md-input-container>
-			<md-select required placeholder="{{to.placeholder}}" ng-model="model[options.key]" ng-required="to.required" ng-focus="focused = true">
-				<md-option ng-repeat="d in to.data" value="{{d[to.valueProp]}}">{{d[to.labelProp]}}</md-option>
-			</md-select>
-			<div ng-messages="form.{{::id}}.$error" ng-if="focused" role="alert">
-				<div ng-message="required">* Required</div>
-    		</div>
-		</md-input-container>
-	</script>
-	<!-- END select -->
-	
-	<script type="text/ng-template" id="switch.html">
-		<md-switch ng-model="model[options.key]" aria-label="{{to.label}}"
-			ng-true-value="{{to.truevalue}}" ng-false-value="{{to.falsevalue}}">
-			{{to.label}}<!-- : {{ model[options.key] }} -->
-		</md-switch>
-	</script>
-	<!-- END switch -->
-	
-	<script type="text/ng-template" id="timepicker.html">
-		<md-input-container>
-			<label>{{to.label}}</label>
-			<input required type="text" class="form-control picker-fix" ng-required="to.required"
-				ng-model="model[options.key]" name="{{::id}}" ng-focus="focused = true" bs-timepicker>
-			<div ng-messages="form.{{::id}}.$error" ng-if="focused" role="alert">
-      			<div ng-message="required">* Required</div>
-    		</div>
-		</md-input-container>
-	</script>
-	<!-- END timepicker -->
-	
-	<!-- material -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-messages.min.js"></script>
-    <script src="/build/app.js"></script>
-	
-	<!-- notes -->
-    <!-- https://github.com/formly-js/angular-formly-website/issues/25 -->
+		</footer>
+    </section>
+</form>
+
+<!-- Put custom templates here -->
+<script type="text/ng-template" id="columnheader.html">
+    <h5 class='md-subhead strong'>{{options.templateOptions.label}}</h5>
+</script>
+<!-- END columnheader -->
+
+<script type="text/ng-template" id="areatext.html">
+    <md-input-container>
+        <label>{{to.label}}</label>
+        <textarea required ng-model="model[options.key]" name="{{::id}}" ng-required="to.required"
+                  ng-focus="focused = true"></textarea>
+
+		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
+			<div ng-message="required">* {{to.label}} required.</div>
+        </div>
+    </md-input-container>
+</script>
+<!-- END areatext -->
+
+<script type="text/ng-template" id="autocomplete.html">
+    <md-autocomplete required
+                     ng-required="to.required"
+                     md-autoselect=true
+                     md-input-name="{{::id}}"
+                     md-search-text="model[options.key+'-tmp']"
+                     md-selected-item="model[options.key]"
+                     md-items="item in to.querySearch(model[options.key+'-tmp'])"
+                     md-item-text="item[to.valueattr]"
+                     md-floating-label="{{to.label}}">
+        <md-item-template>
+            <span md-highlight-text="model[options.key+'-tmp']" md-highlight-flags="^i">{{item[to.valueattr]}}</span>
+        </md-item-template>
+		<div ng-messages="form.{{::id}}.$error" ng-if="to.required && (model[options.key+'-tmp'] == '' || to.submitted)" role="alert">
+			<div ng-message="required">* {{to.label}} required.</div>
+        </div>
+    </md-autocomplete>
+    <!-- http://www.yearofmoo.com/2014/05/how-to-use-ngmessages-in-angularjs.html -->
+    <!-- https://github.com/angular/material/issues/1633 -->
+    <!-- https://github.com/angular/material/issues/2949 -->
+</script>
+<!-- END autocomplete -->
+
+<script type="text/ng-template" id="chips.html">
+    <div layout="row" class="md-chips-row">
+        <md-chips ng-model="model[options.key]"
+                  placeholder="{{to.placeholder}}"
+                  delete-button-label="Remove Tag"
+                  delete-hint="Press delete to remove tag"
+                  secondary-placeholder="{{to.secplaceholder}}"></md-chips>
+    </div>
+</script>
+<!-- END chips -->
+
+<script type="text/ng-template" id="currency.html">
+    <md-select aria-label="{{to.label}}" ng-model="model[options.key].currencyType"
+               class="currency-type">
+        <md-option ng-repeat="d in to.data" value="{{d[to.valueProp]}}">{{d[to.labelProp]}}</md-option>
+    </md-select>
+    <md-input-container>
+        <label>{{to.label}}</label>
+        <input required type="{{to.type}}" ng-model="model[options.key].price" name="{{::id}}"
+               ng-required="to.required" ng-focus="focused = true">
+
+		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
+			<div ng-message="required">* {{to.label}} required.</div>
+			<div ng-message="number">* {{to.label}} is invalid.</div>
+        </div>
+    </md-input-container>
+</script>
+<!-- END currency -->
+
+<script type="text/ng-template" id="datepicker.html">
+    <md-input-container>
+        <label>{{to.label}}</label>
+        <input required type="text" class="form-control picker-fix" ng-required="to.required"
+               ng-model="model[options.key]" name="{{::id}}" ng-focus="focused = true" bs-datepicker>
+
+		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
+			<div ng-message="required">* {{to.label}} required.</div>
+        </div>
+    </md-input-container>
+</script>
+<!-- END datepicker -->
+
+<script type="text/ng-template" id="input.html">
+    <md-input-container>
+        <label>{{to.label}}</label>
+        <input required ng-model="model[options.key]" name="{{::id}}" ng-required="to.required"
+               ng-focus="focused = true">
+
+		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
+			<div ng-message="required">* {{to.label}} required.</div>
+			<div ng-message="email">* {{to.label}} is invalid.</div>
+			<div ng-message="url">* {{to.label}} is invalid (please check it starts with http://).</div>
+			<div ng-message="number">* {{to.label}} is invalid.</div>
+        </div>
+    </md-input-container>
+</script>
+<!-- END input -->
+
+<script type="text/ng-template" id="select.html">
+    <md-input-container>
+        <md-select required placeholder="{{to.placeholder}}" ng-model="model[options.key]" ng-required="to.required"
+                   ng-focus="focused = true">
+            <md-option ng-repeat="d in to.data" value="{{d[to.valueProp]}}">{{d[to.labelProp]}}</md-option>
+        </md-select>
+		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
+			<div ng-message="required">* {{to.placeholder}} required.</div>
+        </div>
+    </md-input-container>
+</script>
+<!-- END select -->
+
+<script type="text/ng-template" id="switch.html">
+    <md-switch ng-model="model[options.key]" aria-label="{{to.label}}"
+               ng-true-value="{{to.truevalue}}" ng-false-value="{{to.falsevalue}}">
+        {{to.label}}<!-- : {{ model[options.key] }} -->
+    </md-switch>
+</script>
+<!-- END switch -->
+
+<script type="text/ng-template" id="timepicker.html">
+    <md-input-container>
+        <label>{{to.label}}</label>
+        <input required type="text" class="form-control picker-fix" ng-required="to.required"
+               ng-model="model[options.key]" name="{{::id}}" ng-focus="focused = true" bs-timepicker>
+
+		<div ng-messages="form.{{::id}}.$error" ng-if="focused || to.submitted" role="alert">
+			<div ng-message="required">* {{to.label}} required.</div>
+        </div>
+    </md-input-container>
+</script>
+<!-- END timepicker -->
+
+<!-- material -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-messages.min.js"></script>
+<script src="/build/app.js"></script>
+
+<!-- notes -->
+<!-- https://github.com/formly-js/angular-formly-website/issues/25 -->
 </body>
 </html>

@@ -4,11 +4,12 @@
 	if (typeof gigwell.agencyId == 'undefined') return;
 	gigwell.iframeName = gigwell.iframeName || 'gigwell-iframe';
 	gigwell.container = gigwell.container || 'gigwell-container';
-	
-	var url = "http://gussoler.github.io/src/booking.html?v=[TMS]&artist-id=[ARTIST]&agency-id=[AGENCY]&iframeOrigin=[ORIGIN]";
+	gigwell.baseUrl = gigwell.baseUrl || 'http://localhost:8080/';
+	gigwell.apiUrl = gigwell.apiUrl || 'http://green.dev.gig-well.com/';
+
+	var url = gigwell.baseUrl + "src/booking.html?v=[TMS]&artist-id=[ARTIST]&agency-id=[AGENCY]&iframeOrigin=[ORIGIN]&apiUrl=[API]";
 	var callbackExecuted = false;
 	var bookingbtn = null;
-	var url;
 	
 	window.addEventListener('message', function(event) {
 		if (!event || !event.data) return;
@@ -44,11 +45,13 @@
 	});
 	
 	var gwInit = function () {
+		/* global escape */
 		url = url.replace('[TMS]', new Date().getTime())
 				 .replace('[ARTIST]', gigwell.artistId? gigwell.artistId:'')
 				 .replace('[AGENCY]', gigwell.agencyId)
-				 .replace('[ORIGIN]', escape(getOrigin(location.href))); /* global escape */
-		
+				 .replace('[ORIGIN]', escape(getOrigin(location.href)))
+				 .replace('[API]', escape(gigwell.apiUrl));
+
 		if (typeof gigwell.preview == 'object') url += '&preview=true';
 		
 		var container = document.getElementById(gigwell.container);
@@ -61,8 +64,8 @@
 			callbackExecuted = false;
 			return false;
 		};
-	}
-	
+	};
+
 	var createBtn = function(src) {
         var btn = document.createElement('a');
         btn.setAttribute('href',src);

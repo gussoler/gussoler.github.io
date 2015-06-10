@@ -20,13 +20,17 @@
 <script type="text/javascript">
 	(function(e,t,n){var r,a,c="script";e.gigwell=e.gigwell||{},r=t.createElement(c),
 		a=t.getElementsByTagName(c)[0],r.async=1,r.src=n,a.parentNode.insertBefore(r,a)
-	})(window,document,'//gussoler.github.io/src/js/booking-widget.js');
+	})(window,document,'/src/js/booking-widget.js');
 	
 	// Required
 	gigwell.agencyId = 14;
 	
 	// Optional
 	// gigwell.artistId = 10;
+
+	// Developer
+	gigwell.baseUrl = 'http://gussoler.github.io/';
+	// gigwell.apiUrl = 'http://glade.desktop.gig-well.com/';
 	
 	// Optional
 	// gigwell.onBooking = function() { console.log('loaded' ); };
