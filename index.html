@@ -1,46 +1,139 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>Snippet TEST</title>
-	<style>
-		div#gigwell-container a.booking {
-			cursor: pointer;font-family: latolight,"helvetica neue",helvetica,arial,sans-serif;
-			text-transform: uppercase;background: #26292E;color: #fff;border: 1px solid transparent;
-			display: inline-block;font-weight: 400;text-align: center;vertical-align: middle;
-			white-space: nowrap;padding: 9px 12px;font-size: 14px;line-height: 1.42857;
-			border-radius: 3px;-webkit-appearance: button;overflow: visible;margin: 0;
-			box-sizing: border-box;text-decoration: none;z-index: 1;
-		}
-	</style>
-</head>
-<body>
-
-<div id='gigwell-container'></div>
-<script type="text/javascript">
-	(function(e,t,n){var r,a,c="script";e.gigwell=e.gigwell||{},r=t.createElement(c),
-		a=t.getElementsByTagName(c)[0],r.async=1,r.src=n,a.parentNode.insertBefore(r,a)
-	})(window,document,'/src/js/booking-widget.js');
-	
-	// Required
-	gigwell.agencyId = 14;
-	
-	// Optional
-	// gigwell.artistId = 10;
-	
-	// Optional
-	// gigwell.formDisplayMode = 'modal'; //default: 'inline'
-
-	// Developer
-	gigwell.baseUrl = 'http://gussoler.github.io/';
-	// gigwell.apiUrl = 'http://glade.desktop.gig-well.com/';
-	
-	// Optional
-	// gigwell.onBooking = function() { console.log('loaded' ); };
-	
-	// Internal use for previewing
-	// gigwell.preview = [[{"type":"columnheader","hide":false,"templateOptions":{"label":"Event Details"}},{"key":"artist","type":"autocomplete","hide":false,"templateOptions":{"label":"Artist Name","required":true,"valueattr":"title"}},{"key":"offer","type":"currency","templateOptions":{"label":"Offer Amount","type":"number","valueProp":"value","labelProp":"displayName"}},{"key":"date","type":"date","templateOptions":{"label":"Date","required":true}},{"key":"name","type":"input","templateOptions":{"type":"text","label":"Event Name"}},{"key":"time","type":"time","templateOptions":{"label":"Set / Stage Time"}},{"key":"lineup","type":"chips","templateOptions":{"label":"Confirmed Line Up","placeholder":"+Confirmed Line Up","secplaceholder":"Confirmed Line Up | + press ENTER"}},{"key":"type","type":"select","templateOptions":{"valueProp":"value","labelProp":"value","placeholder":"Event Type"}},{"key":"logistics_accommodation","type":"switch","templateOptions":{"label":"Includes Accommodation","truevalue":"true","falsevalue":"false"}}],[{"type":"columnheader","templateOptions":{"label":"Promoter Organization"}},{"key":"organization_name","type":"input","templateOptions":{"type":"text","label":"Organization Name"}},{"key":"organization_country","type":"autocomplete","templateOptions":{"label":"Country","valueattr":"name"}}]];
-</script>
-
-</body>
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>Gussoler</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="profile" />
+      <meta name="keywords" content="java, j2ee, developer" />
+      <meta name="author" content="Gustavo A. Soler" />
+      <link href="https://fonts.googleapis.com/css?family=Karla:400,700" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+      <link rel="stylesheet" href="css/animate.css">
+      <link rel="stylesheet" href="css/icomoon.css">
+      <link rel="stylesheet" href="css/bootstrap.css">
+      <link rel="stylesheet" href="css/owl.carousel.min.css">
+      <link rel="stylesheet" href="css/owl.theme.default.min.css">
+      <link rel="stylesheet" href="css/magnific-popup.css">
+      <link rel="stylesheet" href="css/style.css">
+      <script src="js/modernizr-2.6.2.min.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <!--[if lt IE 9]>
+      <script src="js/respond.min.js"></script>
+      <![endif]-->
+   </head>
+   <body>
+      <nav id="colorlib-main-nav" role="navigation">
+         <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle active"><i></i></a>
+         <div class="js-fullheight colorlib-table">
+            <div class="colorlib-table-cell js-fullheight">
+               <div class="row">
+                  <div class="col-md-12">
+                     <ul>
+                        <li class="active"><a href="index.html">Home</a></li>
+                        <li><a href="#footer">Contact</a></li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </nav>
+      <div id="colorlib-page">
+         <header>
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="colorlib-navbar-brand">
+                        <a class="colorlib-logo" href="index.html"><span>GUS</span><span>SOLER</span></a>
+                     </div>
+                     <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
+                  </div>
+               </div>
+            </div>
+         </header>
+         <div id="colorlib-about">
+            <div class="container">
+               <div class="row text-center">
+                  <h2 class="bold">About</h2>
+               </div>
+               <div class="row">
+                  <div class="col-md-5 animate-box">
+                     <div class="owl-carousel3">
+                        <div class="item">
+                           <img class="img-responsive about-img" src="images/about.png" alt="html5 bootstrap template by colorlib.com">
+                        </div>
+                        <div class="item">
+                           <img class="img-responsive about-img" src="images/about_2.png" alt="html5 bootstrap template by colorlib.com">
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6 col-md-push-1 animate-box">
+                     <div class="about-desc">
+                        <div class="owl-carousel3">
+                           <div class="item">
+                              <h2><span>Gustavo</span><span>Soler</span></h2>
+                           </div>
+                           <div class="item">
+                              <h2><span>I'm</span><span>A Developer</span></h2>
+                           </div>
+                        </div>
+                        <div class="desc">
+                           <div class="rotate">
+                              <h2 class="heading">About</h2>
+                           </div>
+                           <p>Development for web applications, front-end and back-end. Currently my interest is in broadening my skills and experience in technologies that are part of the J2EE world. I continuously try to get better at what I do, learning about new solutions and technologies.</p>
+                           <p class="colorlib-social-icons">
+                              <a href="https://www.linkedin.com/in/gussoler/"><i class="icon-linkedin"></i></a>
+                              <a href="#"><i class="icon-twitter3"></i></a>
+                              <a href="#"><i class="icon-googleplus"></i></a>
+                           </p>
+                           <p><a href="#footer" class="btn btn-primary btn-outline">Contact Me!</a></p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <footer>
+            <div id="footer">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-md-6 col-pb-sm">
+                        <div class="row">
+                           <div class="col-md-10">
+                              <h2>Let's Talk</h2>
+                              <p>What I Like: software analysis, development and evolutive maintenance, design and implementation.</p>
+                              <p>Hobby: stock markets/ finance / travel</p>
+                              <p>gussoler80@gmail.com</p>
+                              <p class="colorlib-social-icons">
+                                 <a href="https://www.linkedin.com/in/gussoler/"><i class="icon-linkedin"></i></a>
+                                 <a href="#"><i class="icon-twitter3"></i></a>
+                                 <a href="#"><i class="icon-googleplus"></i></a>
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-12 text-center">
+                        <p>
+                           &copy; 
+                           Gustavo Alejandro Soler - <script type="eb229f2021c43dfb9bb71dae-text/javascript">document.write(new Date().getFullYear());</script> 
+                        </p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </footer>
+      </div>
+      <script src="js/jquery.min.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <script src="js/jquery.easing.1.3.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <script src="js/bootstrap.min.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <script src="js/jquery.waypoints.min.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <script src="js/owl.carousel.min.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <script src="js/jquery.magnific-popup.min.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <script src="js/magnific-popup-options.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <script src="js/main.js" type="eb229f2021c43dfb9bb71dae-text/javascript"></script>
+      <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/a2bd7673/cloudflare-static/rocket-loader.min.js" data-cf-settings="eb229f2021c43dfb9bb71dae-|49" defer=""></script>
+   </body>
 </html>
